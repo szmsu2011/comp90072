@@ -1,0 +1,56 @@
+---
+title: "Respiratory Rate Determination by Non-Invasive Means"
+author: "Stephen Su, 844503, COMP90072"
+output:
+  pdf_document:
+    keep_tex: true
+    fig_caption: yes
+    number_sections: yes
+  css: style.css
+bibliography: refs.bib
+csl: apa.csl
+urlcolor: blue
+---
+
+<style type="text/css">
+
+body {
+  font-family: serif;
+  text-align: justify;
+}
+
+</style>
+
+```{r setup, include = FALSE}
+library(knitr)
+opts_chunk$set(
+  message = FALSE, warning = FALSE, echo = FALSE, dpi = 110,
+  fig.retina = 3, fig.align = "center", comment = "#>",
+  dev.args = list(png = list(type = "cairo"))
+)
+```
+
+```{r lib}
+library(tidyverse)
+```
+
+```{r code, include = FALSE, cache = FALSE}
+read_chunk("report.R")
+```
+
+# Introduction
+
+## Background
+
+R [@baseR], RMarkdown [@rmd] and xaringan [@xar]..
+
+# The data
+
+## Sample plot
+
+```{r data}
+```
+
+\newpage
+
+# References
