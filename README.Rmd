@@ -36,8 +36,10 @@ Before starting, you will need to covert the raw `.dat` data files into `.csv` f
 ```{r data, eval = FALSE}
 source("R/data.R")
 create_data_dir()
-process_all_ecg_files()
+process_all_ecg_files(n_core = 1L)
 ```
+
+Note that if you are running R on a Unix-like system (e.g., macOS, Linux), set argument `n_core` up to the number of available CPU cores on your machine to speed up the process (via command line only).
 
 The deliverables of the project consist of a PDF report and an HTML slide rendered by RMarkdown.
 
