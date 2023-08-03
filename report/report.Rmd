@@ -25,13 +25,14 @@ body {
 library(knitr)
 opts_chunk$set(
   message = FALSE, warning = FALSE, echo = FALSE, dpi = 110,
-  fig.retina = 3, fig.align = "center", comment = "#>",
+  fig.height = 4, fig.align = "center", comment = "#>",
   dev.args = list(png = list(type = "cairo"))
 )
 ```
 
-```{r lib}
+```{r lib, include = FALSE}
 library(tidyverse)
+map(list.files("../R", full.names = TRUE), source)
 ```
 
 ```{r code, include = FALSE, cache = FALSE}
@@ -42,9 +43,13 @@ read_chunk("report.R")
 
 ## Background
 
-R [@baseR], RMarkdown [@rmd] and xaringan [@xar]..
+[@apnea2000].
 
 # The data
+
+## Data source
+
+[@physiobank2000].
 
 ## Sample plot
 
