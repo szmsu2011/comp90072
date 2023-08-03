@@ -48,5 +48,6 @@ po/*~
 # RStudio Connect folder
 rsconnect/
 
-# Processed data files
+# Interim files
 data/
+_report/
