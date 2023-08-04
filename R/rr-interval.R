@@ -14,7 +14,7 @@ rr_interval <- function(voltage) {
 abnormal_rr <- function(voltage, max_bpm = 130, min_bpm = 40) {
   r_point <- r_point_pos(voltage)
   rr <- rr_interval(voltage)
-  abnormal_pos <- which(!between(rr, 60 / 130, 60 / 40))
+  abnormal_pos <- which(!between(rr, 60 / max_bpm, 60 / min_bpm))
   abnormal_time <- r_point[abnormal_pos] |>
     map(function(time) time + c(-200, 200))
   ## Note: the unit of `abnormal_time` is (10ms)
