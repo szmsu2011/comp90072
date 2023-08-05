@@ -27,16 +27,3 @@ plot_rr <- function(data, max_events = Inf) {
     labs(x = "nth heart beat", y = "R-R interval (s)")
   return(p)
 }
-
-## Plot the ECG with selected interval of abnormal R-R
-plot_abnormal_rr <- function(data, event = 1L, max_bpm = 130, min_bpm = 40) {
-  abnormal_interval <- abnormal_rr(data$voltage, max_bpm, min_bpm)
-  event <- min(event[1L], length(abnormal_interval))
-  abnormal_point <- abnormal_interval[[event]]
-  data <- filter(data, between(time, abnormal_point[1], abnormal_point[2]))
-  recorded_rr <- rr_interval(data$voltage)
-  abnormal_rr <- recorded_rr[!between(recorded_rr, 60 / max_bpm, 60 / min_bpm)]
-  p <- plot_ecg(data) +
-    labs(title = sprintf("Recorded abnormal R-R interval of %ss", abnormal_rr))
-  return(p)
-}

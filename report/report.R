@@ -6,12 +6,21 @@ plot_ecg(data) +
 ## ---- rr-interval
 plot_rr(data) +
   labs(title = "8-hour R-R intervals of subject a01")
-
-## ---- abnormal-interval
-interval <- rr_interval(data$voltage)
-range(interval) ## Range of R-R intervals
-60 / range(interval) ## Range of instantaneous heart rate per minute
-abnormal_interval <- abnormal_rr(data$voltage, max_bpm = 130, min_bpm = 40)
-length(abnormal_interval) ## Number of abnormal R-R intervals
-length(interval) ## Total number of heart beats
-invisible(map(seq_len(58), function(i) print(plot_abnormal_rr(data, i))))
+data <- read_csv("../data/learning-set/a02.csv")
+plot_rr(data) +
+  labs(title = "8-hour R-R intervals of subject a02")
+plot_ecg(data[48000:51000, ], 3000) +
+  labs(title = "30-second sample of subject a02")
+plot_ecg(data[180000:183000, ], 3000) +
+  labs(title = "Another 30-second sample of subject a02")
+plot_ecg(data[198000:201000, ], 3000) +
+  labs(title = "Yet another 30-second sample of subject a02")
+data <- read_csv("../data/learning-set/a03.csv")
+plot_rr(data) +
+  labs(title = "8-hour R-R intervals of subject a03")
+data <- read_csv("../data/learning-set/a04.csv")
+plot_rr(data) +
+  labs(title = "8-hour R-R intervals of subject a04")
+data <- read_csv("../data/learning-set/a05.csv")
+plot_rr(data) +
+  labs(title = "8-hour R-R intervals of subject a05")

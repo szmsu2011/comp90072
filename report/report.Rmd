@@ -32,6 +32,7 @@ opts_chunk$set(
 
 ```{r lib, include = FALSE}
 library(tidyverse)
+library(zoo)
 map(list.files("../R", full.names = TRUE), source)
 ```
 

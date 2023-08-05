@@ -35,46 +35,6 @@
 \makeatother
 \usepackage{xcolor}
 \usepackage[margin=1in]{geometry}
-\usepackage{color}
-\usepackage{fancyvrb}
-\newcommand{\VerbBar}{|}
-\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
-\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
-% Add ',fontsize=\small' for more characters per line
-\usepackage{framed}
-\definecolor{shadecolor}{RGB}{248,248,248}
-\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
-\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
-\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\BuiltInTok}[1]{#1}
-\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
-\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
-\newcommand{\ExtensionTok}[1]{#1}
-\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\ImportTok}[1]{#1}
-\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\NormalTok}[1]{#1}
-\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
-\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
-\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{graphicx}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -161,169 +121,19 @@
 
 \begin{center}\includegraphics{report_files/figure-latex/rr-interval-1} \end{center}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{interval }\OtherTok{\textless{}{-}} \FunctionTok{rr\_interval}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{voltage)}
-\FunctionTok{range}\NormalTok{(interval) }\DocumentationTok{\#\# Range of R{-}R intervals}
-\end{Highlighting}
-\end{Shaded}
+\begin{center}\includegraphics{report_files/figure-latex/rr-interval-2} \end{center}
 
-\begin{verbatim}
-#> [1] 0.13 1.89
-\end{verbatim}
+\begin{center}\includegraphics{report_files/figure-latex/rr-interval-3} \end{center}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\DecValTok{60} \SpecialCharTok{/} \FunctionTok{range}\NormalTok{(interval) }\DocumentationTok{\#\# Range of instantaneous heart rate per minute}
-\end{Highlighting}
-\end{Shaded}
+\begin{center}\includegraphics{report_files/figure-latex/rr-interval-4} \end{center}
 
-\begin{verbatim}
-#> [1] 461.53846  31.74603
-\end{verbatim}
+\begin{center}\includegraphics{report_files/figure-latex/rr-interval-5} \end{center}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{abnormal\_interval }\OtherTok{\textless{}{-}} \FunctionTok{abnormal\_rr}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{voltage, }\AttributeTok{max\_bpm =} \DecValTok{130}\NormalTok{, }\AttributeTok{min\_bpm =} \DecValTok{40}\NormalTok{)}
-\FunctionTok{length}\NormalTok{(abnormal\_interval) }\DocumentationTok{\#\# Number of abnormal R{-}R intervals}
-\end{Highlighting}
-\end{Shaded}
+\begin{center}\includegraphics{report_files/figure-latex/rr-interval-6} \end{center}
 
-\begin{verbatim}
-#> [1] 58
-\end{verbatim}
+\begin{center}\includegraphics{report_files/figure-latex/rr-interval-7} \end{center}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{length}\NormalTok{(interval) }\DocumentationTok{\#\# Total number of heart beats}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-#> [1] 29941
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{invisible}\NormalTok{(}\FunctionTok{map}\NormalTok{(}\FunctionTok{seq\_len}\NormalTok{(}\DecValTok{58}\NormalTok{), }\ControlFlowTok{function}\NormalTok{(i) }\FunctionTok{print}\NormalTok{(}\FunctionTok{plot\_abnormal\_rr}\NormalTok{(data, i))))}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-1} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-2} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-3} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-4} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-5} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-6} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-7} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-8} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-9} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-10} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-11} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-12} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-13} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-14} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-15} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-16} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-17} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-18} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-19} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-20} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-21} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-22} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-23} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-24} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-25} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-26} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-27} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-28} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-29} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-30} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-31} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-32} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-33} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-34} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-35} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-36} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-37} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-38} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-39} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-40} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-41} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-42} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-43} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-44} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-45} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-46} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-47} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-48} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-49} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-50} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-51} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-52} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-53} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-54} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-55} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-56} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-57} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/abnormal-interval-58} \end{center}
+\begin{center}\includegraphics{report_files/figure-latex/rr-interval-8} \end{center}
 
 \newpage
 
