@@ -18,11 +18,11 @@ plot_ecg <- function(data, max_events = 1000) {
 
 ## Plot the R-R intervals as series of consecutive heart beats
 plot_rr <- function(data, max_events = Inf) {
-  rr <- head(rr_interval(data$voltage), max_events)
+  rr <- head(diff(r_peak_pos(data$voltage)) / 100, max_events)
   p <- tibble(rr = rr, time = seq_along(rr)) |>
     ggplot(aes(time, rr)) +
     geom_line() +
-    geom_hline(yintercept = 60 / c(40, 130), colour = "red") +
+    ylim(c(0, ceiling(max(rr)))) +
     theme_bw() +
     labs(x = "nth heart beat", y = "R-R interval (s)")
   return(p)

@@ -24,7 +24,7 @@ body {
 ```{r setup, include = FALSE}
 library(knitr)
 opts_chunk$set(
-  message = FALSE, warning = FALSE, echo = FALSE, dpi = 110,
+  message = FALSE, warning = FALSE, echo = FALSE, dpi = 500,
   fig.height = 4, fig.align = "center", comment = "#>",
   dev.args = list(png = list(type = "cairo"))
 )
