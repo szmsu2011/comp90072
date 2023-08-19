@@ -1,29 +1,49 @@
 ## Plot an ECG as a time series of amplitude (in mV)
-plot_ecg <- function(data, max_events = 1000) {
-  data <- slice_head(data, n = max_events) |>
-    mutate(time = time / 100, voltage = voltage / 200)
+## S3 method for class "ecg_ts"
+plot.ecg_ts <- function(x, events = seq_len(1000),
+                        freq = 100, resolution = 200) {
+  data <- tibble(
+    time = seq_along(x) / freq,
+    voltage = x / resolution
+  ) |>
+    slice(events)
   p <- data |>
     ggplot(aes(time, voltage)) +
     geom_line() +
     theme_bw() +
-    scale_x_continuous(breaks = c(0, seq_len(ceiling(max(data$time))))) +
-    scale_y_continuous(breaks = c(0, seq_len(ceiling(max(data$voltage))))) +
-    theme(
-      panel.grid.major = element_line(colour = "pink"),
-      panel.grid.minor = element_line(colour = "pink")
-    ) +
     labs(x = "Time (s)", y = "Amplitude (mV)")
   return(p)
 }
 
-## Plot the R-R intervals as series of consecutive heart beats
-plot_rr <- function(data, max_events = Inf) {
-  rr <- head(diff(r_peak_pos(data$voltage)) / 100, max_events)
-  p <- tibble(rr = rr, time = seq_along(rr)) |>
-    ggplot(aes(time, rr)) +
-    geom_line() +
-    ylim(c(0, ceiling(max(rr)))) +
+## Plot the frequency spectrum of the ECG data
+## S3 method for class "ecg_freq"
+plot.ecg_freq <- function(x) {
+  p <- x |>
+    ggplot(aes(freq, power)) +
+    geom_segment(aes(xend = freq, yend = 0), col = "steelblue") +
+    labs(x = "Frequency (Hz)", y = "Relative amplitude") +
     theme_bw() +
-    labs(x = "nth heart beat", y = "R-R interval (s)")
+    theme(
+      axis.ticks.y = element_blank(),
+      axis.text.y = element_blank()
+    )
+  return(p)
+}
+
+## Plot the ECG with marked R-peaks
+## S3 method for class "ecg_rts"
+plot.ecg_rts <- function(x, events = seq(301, 2301),
+                         freq = 100, resolution = 200) {
+  p <- plot.ecg_ts(x$ecg, events, freq, resolution)
+  rp_data <- tibble(
+    time = seq_along(x$ecg) / freq,
+    r_peak = (seq_along(x$ecg) %in% x$r_peak) * x$ecg / resolution,
+    type = "Estimated R-peaks"
+  ) |>
+    slice(events) |>
+    filter(r_peak > 0)
+  p <- p +
+    geom_point(aes(y = r_peak, col = type), data = rp_data) +
+    theme(legend.title = element_blank(), legend.position = "top")
   return(p)
 }

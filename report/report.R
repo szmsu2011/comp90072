@@ -1,17 +1,13 @@
 ## ---- data
-data <- read_csv("../data/learning-set/a01.csv")
-plot_ecg(data) +
-  labs(title = "10-second sample of subject a01")
+a01 <- read_ecg("../data-bin/a01.dat")
+a02 <- read_ecg("../data-bin/a02.dat")
 
 ## ---- rr-interval
-plot_rr(data) +
-  labs(title = "8-hour R-R intervals of subject a01")
-read_csv("../data/learning-set/a02.csv") |>
-  plot_rr() +
-  labs(title = "8-hour R-R intervals of subject a02")
-read_csv("../data/learning-set/a03.csv") |>
-  plot_rr() +
-  labs(title = "8-hour R-R intervals of subject a03")
-read_csv("../data/learning-set/a04.csv") |>
-  plot_rr() +
-  labs(title = "8-hour R-R intervals of subject a04")
+plot(a01) + labs(title = "10-second sample of subject a01")
+plot(frequency(a01)) + labs(title = "Frequency spectrum of subject a01")
+plot(find_r_peaks(a01))
+plot(a02) + labs(title = "10-second sample of subject a02")
+a02_r_peaks <- find_r_peaks(a02)
+plot(a02_r_peaks)
+plot(a02_r_peaks, 48000:51000)
+plot(a02_r_peaks, 198000:201000)
