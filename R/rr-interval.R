@@ -44,7 +44,7 @@ find_r_peaks <- function(x) {
   lgl_1 <- signal > pmax(threshold, unname(quantile(signal, 0.95)))
   lgl_2 <- c(FALSE, diff(diff(signal) > 0) == -1, FALSE)
   r_peak <- which(lgl_1 & lgl_2)
-  r_peak <- r_peak[c(diff(r_peak) > 30, FALSE)]
+  r_peak <- r_peak[c(diff(r_peak) > 30, TRUE)]
   rts <- list(ecg = x, r_peak = r_peak)
   class(rts) <- "ecg_rts"
   rts <- correct_phase(rts)
