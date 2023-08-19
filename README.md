@@ -16,8 +16,8 @@ the following packages and their dependencies as follows:
 install.packages("xaringan")
 install.packages("xaringanthemer")
 install.packages("tidyverse")
-install.packages("furrr")
 install.packages("zoo")
+install.packages("reticulate")
 ```
 
 ## Reproducible research
