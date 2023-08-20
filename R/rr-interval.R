@@ -40,7 +40,7 @@ correct_phase <- function(x) {
 find_r_peaks <- function(x) {
   stopifnot(inherits(x, "ecg_ts"))
   signal <- noise_filter(x)
-  threshold <- c(rep(Inf, 100), rollmax(signal, 101) / 2)
+  threshold <- rollmax(signal, 101, fill = Inf) / 2
   lgl_1 <- signal > pmax(threshold, unname(quantile(signal, 0.95)))
   lgl_2 <- c(FALSE, diff(diff(signal) > 0) == -1, FALSE)
   r_peak <- which(lgl_1 & lgl_2)
