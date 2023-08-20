@@ -13,16 +13,16 @@ read_ecg <- function(file_name, events = Inf) {
 ## Read a specified respiratory data file
 ## S3 generic object "resp_ts"
 read_resp <- function(file_name, events = Inf) {
-  vec_size <- file.size(file_name) / 8
-  events <- min(events, vec_size)
+  vec_size <- file.size(file_name) / 2
+  events <- min(events * 4, vec_size)
   A <- file(file_name, "rb")
   y <- readBin(A, "integer", events, size = 2, signed = TRUE, endian = "little")
   close(A)
   resp <- list(
-    resp_c = y[seq_len(vec_size * 4) %% 4 == 1],
-    resp_a = y[seq_len(vec_size * 4) %% 4 == 2],
-    resp_n = y[seq_len(vec_size * 4) %% 4 == 3],
-    spo2 = y[seq_len(vec_size * 4) %% 4 == 0]
+    resp_c = y[seq_len(vec_size) %% 4 == 1],
+    resp_a = y[seq_len(vec_size) %% 4 == 2],
+    resp_n = y[seq_len(vec_size) %% 4 == 3],
+    spo2 = y[seq_len(vec_size) %% 4 == 0]
   )
   class(resp) <- c("resp_ts", class(y))
   return(resp)
