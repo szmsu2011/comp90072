@@ -1,13 +1,29 @@
-## Read a specified ECG data file into an integer vector
-read_ecg <- function(file_name, offset = 0L, events = Inf) {
+## Read a specified ECG data file
+## S3 generic object "ecg_ts"
+read_ecg <- function(file_name, events = Inf) {
   vec_size <- file.size(file_name) / 2
   events <- min(events, vec_size)
   A <- file(file_name, "rb")
-  seek(A, offset * 2)
   y <- readBin(A, "integer", events, size = 2, signed = TRUE, endian = "little")
   close(A)
-  trailing_zero <- length(y) - which(cumsum(rev(y)) == 0) + 1
-  if (length(trailing_zero) > 0) y <- y[-trailing_zero]
   class(y) <- c("ecg_ts", class(y))
   return(y)
+}
+
+## Read a specified respiratory data file
+## S3 generic object "resp_ts"
+read_resp <- function(file_name, events = Inf) {
+  vec_size <- file.size(file_name) / 8
+  events <- min(events, vec_size)
+  A <- file(file_name, "rb")
+  y <- readBin(A, "integer", events, size = 2, signed = TRUE, endian = "little")
+  close(A)
+  resp <- list(
+    resp_c = y[seq_len(vec_size * 4) %% 4 == 1],
+    resp_a = y[seq_len(vec_size * 4) %% 4 == 2],
+    resp_n = y[seq_len(vec_size * 4) %% 4 == 3],
+    spo2 = y[seq_len(vec_size * 4) %% 4 == 0]
+  )
+  class(resp) <- c("resp_ts", class(y))
+  return(resp)
 }

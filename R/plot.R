@@ -47,3 +47,15 @@ plot.ecg_rts <- function(x, events = seq(301, 2301),
     theme(legend.title = element_blank(), legend.position = "top")
   return(p)
 }
+
+## Plot the respiratory data
+## S3 method for class "resp_ts"
+plot.resp_ts <- function(x, events = seq_len(1000),
+                         freq = 100, resolution = 1) {
+  p <- map2(x, seq_len(length(x)), function(ts, i) {
+    plot.ecg_ts(ts, events, freq, resolution) +
+      labs(x = ifelse(i == length(x), "Time (s)", ""), y = "")
+  })
+  p <- inject(wrap_plots(!!!p, ncol = 1L))
+  return(p)
+}
