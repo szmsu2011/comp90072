@@ -1,5 +1,5 @@
 ## Return the frequency spectrum of the ECG data
-## S3 method for class "ecg_ts"
+## S3 method for class "ecg_ts"; S3 generic object "ecg_freq"
 frequency.ecg_ts <- function(x, freq = 100, sample_events = 1e5) {
   x_fft <- abs(fft(head(x, sample_events)))
   x_freq <- tibble(
@@ -37,6 +37,7 @@ correct_phase <- function(x) {
 }
 
 ## Mark the position of R-peaks in the series
+## S3 generic object "ecg_rts"
 find_r_peaks <- function(x) {
   stopifnot(inherits(x, "ecg_ts"))
   signal <- noise_filter(x)
@@ -46,7 +47,16 @@ find_r_peaks <- function(x) {
   r_peak <- which(lgl_1 & lgl_2)
   r_peak <- r_peak[c(diff(r_peak) > 30, TRUE)]
   rts <- list(ecg = x, r_peak = r_peak)
-  class(rts) <- "ecg_rts"
+  class(rts) <- c("ecg_rts", class(rts))
   rts <- correct_phase(rts)
   return(rts)
+}
+
+## Determine the instantaneous heart rate from R-peaks
+## S3 method for class "ecg_rts"; S3 generic object "ecg_hr"
+frequency.ecg_rts <- function(x, freq = 100) {
+  rr <- c(rep(NA, first(x$r_peak)), rep(diff(x$r_peak), diff(x$r_peak)))
+  hr <- 60 / rr * freq
+  class(hr) <- c("ecg_hr", class(hr))
+  return(hr)
 }

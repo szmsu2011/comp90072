@@ -32,7 +32,7 @@ plot.ecg_freq <- function(x) {
 
 ## Plot the ECG with marked R-peaks
 ## S3 method for class "ecg_rts"
-plot.ecg_rts <- function(x, events = seq(301, 2301),
+plot.ecg_rts <- function(x, events = seq(301, 2300),
                          freq = 100, resolution = 200) {
   p <- plot.ecg_ts(x$ecg, events, freq, resolution)
   rp_data <- tibble(
@@ -54,8 +54,23 @@ plot.resp_ts <- function(x, events = seq_len(1000),
                          freq = 100, resolution = 1) {
   p <- map2(x, seq_len(length(x)), function(ts, i) {
     plot.ecg_ts(ts, events, freq, resolution) +
-      labs(x = ifelse(i == length(x), "Time (s)", ""), y = "")
+      labs(
+        x = ifelse(i == length(x), "Time (s)", ""),
+        y = c("Resp C", "Resp A", "Resp N", "SpO2")[i]
+      )
   })
   p <- inject(wrap_plots(!!!p, ncol = 1L))
+  return(p)
+}
+
+## Plot the heart rate
+## S3 method for class "ecg_hr"
+plot.ecg_hr <- function(x, events = seq(501, 6500), freq = 100) {
+  p <- plot.ecg_ts(x, events, freq, 1) +
+    labs(y = "Instantaneous heart rate (BPM)") +
+    geom_smooth(
+      formula = y ~ s(x, k = round(diff(range(events)) / freq / 2)),
+      method = "gam", linewidth = 0.65
+    )
   return(p)
 }

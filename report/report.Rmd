@@ -32,7 +32,10 @@ opts_chunk$set(
 
 ```{r lib, include = FALSE}
 library(tidyverse)
+library(rlang)
 library(zoo)
+library(Rcpp)
+sourceCpp("../src/model-df.cpp")
 map(list.files("../R", full.names = TRUE), source)
 ```
 
