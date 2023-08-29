@@ -12,3 +12,11 @@ plot(a02_r_peaks)
 plot(a02_r_peaks, 48000:51000)
 plot(a02_r_peaks, 198000:201000)
 plot(frequency(a02_r_peaks)) + labs(title = "a02")
+
+## ---- resp
+plot(frequency(a02_r_peaks))
+plot(down_sample(frequency(a02_r_peaks)), freq = 1)
+resp <- read_resp("../data-bin/a02r.dat")
+plot(resp, which = "Resp C")
+plot(resp, which = "Resp A")
+plot(resp, which = "Resp N")

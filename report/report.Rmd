@@ -32,6 +32,7 @@ opts_chunk$set(
 
 ```{r lib, include = FALSE}
 library(tidyverse)
+library(patchwork)
 library(rlang)
 library(zoo)
 library(Rcpp)
@@ -61,6 +62,13 @@ read_chunk("report.R")
 ```
 
 ```{r rr-interval}
+```
+
+\newpage
+
+## Respiratory analysis (Subject a02)
+
+```{r resp}
 ```
 
 \newpage
