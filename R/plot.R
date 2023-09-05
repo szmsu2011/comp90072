@@ -50,7 +50,7 @@ plot.ecg_rts <- function(x, events = seq(3 * freq, 23 * freq),
 
 ## Plot the respiratory data
 ## S3 method for class "resp_ts"
-plot.resp_ts <- function(x, events = seq_len(10 * freq),
+plot.resp_ts <- function(x, events = seq_len(60 * freq),
                          freq = 100, resolution = 1,
                          which = c("all", "Resp C", "Resp A", "Resp N")) {
   which <- arg_match(which)
@@ -65,7 +65,7 @@ plot.resp_ts <- function(x, events = seq_len(10 * freq),
   if (which == "all") {
     p <- inject(wrap_plots(!!!p, ncol = 1L))
   } else {
-    p <- p[[which]]
+    p <- p[[which]] + labs(x = "Time (s)")
   }
   return(p)
 }
