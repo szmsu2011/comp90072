@@ -15,8 +15,21 @@ plot(frequency(a02_r_peaks)) + labs(title = "a02")
 
 ## ---- resp
 plot(frequency(a02_r_peaks))
-plot(down_sample(frequency(a02_r_peaks)), freq = 1)
+hr <- down_sample(frequency(a02_r_peaks))
+plot(hr, freq = 1)
 resp <- down_sample(read_resp("../data-bin/a02r.dat"))
 plot(resp, which = "Resp C", freq = 1)
 plot(resp, which = "Resp A", freq = 1)
 plot(resp, which = "Resp N", freq = 1)
+resp_df <- resp_dataset(hr, resp)
+test <- lm(breath_chest ~ 0 + breath_ecg, resp_df)
+summary(test)
+cat("Wald Chi-squared test")
+c("p-value" = unname(pchisq(
+  sum(resp_df$breath_ecg^2) * (coef(test) - 1)^2 *
+    (nrow(resp_df) - 1) / sum(residuals(test)^2), 1,
+  lower.tail = FALSE
+)))
+confint(test)
+resp_df
+summary(resp_df)

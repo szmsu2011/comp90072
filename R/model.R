@@ -12,21 +12,47 @@ down_sample <- function(x, freq = 100, target_freq = 1) {
   return(x_ds)
 }
 
-## Helper function to count number of BPM using LZC
-bpm <- function(x, f) {
-  lzc <- x - lowess(x, f = f)$y
+## Helper function to count number of breaths per minute using SSZC
+bpm <- function(x, ...) {
+  lzc <- x - smooth.spline(seq_along(x), x, ...)$y
   est_bpm <- sum(diff(lzc > 0) != 0, na.rm = TRUE) / 2
   return(est_bpm)
 }
 
-## Generate data set for BR vs HR
-brhr_dataset <- function(ecg_hr, resp_ts) {
+## Compute chest-movement BPM and HR-derived BPM
+resp_dataset <- function(ecg_hr, resp_ts, plot_cv = TRUE) {
   stopifnot(inherits(ecg_hr, "ecg_hr"))
   stopifnot(inherits(resp_ts, "resp_ts"))
-  resp_ts <- resp_ts |>
-    head(-1) |>
-    map(function(x) tail(x, -sum(is.na(ecg_hr))))
+  resp_ts <- tail(resp_ts$resp_c, -sum(is.na(ecg_hr)))
   ecg_hr <- na.omit(ecg_hr)
-  n_min <- min(length(ecg_hr), length(resp_ts[[1]])) %/% 60
-  ...
+  n_min <- min(length(ecg_hr), length(resp_ts)) %/% 60
+  chest_bpm <- map_dbl(seq_len(n_min) * 60, function(t) {
+    bpm(resp_ts[seq(t - 59, t)])
+  })
+  lambda <- smooth.spline(seq_len(60), head(ecg_hr, 60))$lambda *
+    exp(seq(-10, 10, length = 100))
+  mse <- map_dbl(lambda, function(lambda) {
+    hr_bpm <- map_dbl(seq_len(n_min) * 60, function(t) {
+      bpm(ecg_hr[seq(t - 59, t)], lambda = lambda)
+    })
+    mean((chest_bpm - hr_bpm)^2)
+  })
+  opt_lambda <- print(c(opt_lambda = lambda[which.min(mse)]))
+  if (plot_cv) {
+    print(tibble(lambda = log(lambda), mse = mse) |>
+      ggplot(aes(lambda, mse)) +
+      geom_line() +
+      geom_vline(xintercept = log(opt_lambda), col = 2) +
+      theme_bw() +
+      labs(
+        title = "Regularisation result",
+        x = expression(log(lambda)),
+        y = expression(L[2] * " loss")
+      ))
+  }
+  hr_bpm <- map_dbl(seq_len(n_min) * 60, function(t) {
+    bpm(ecg_hr[seq(t - 59, t)], lambda = opt_lambda)
+  })
+  resp_df <- tibble(breath_chest = chest_bpm, breath_ecg = hr_bpm)
+  return(resp_df)
 }

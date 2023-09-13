@@ -149,6 +149,74 @@ a02)}\label{respiratory-analysis-subject-a02}}
 
 \begin{center}\includegraphics{report_files/figure-latex/resp-5} \end{center}
 
+\begin{verbatim}
+#> opt_lambda 
+#> 7.2698e-06
+\end{verbatim}
+
+\begin{center}\includegraphics{report_files/figure-latex/resp-6} \end{center}
+
+\begin{verbatim}
+#> 
+#> Call:
+#> lm(formula = breath_chest ~ 0 + breath_ecg, data = resp_df)
+#> 
+#> Residuals:
+#>      Min       1Q   Median       3Q      Max 
+#> -10.2234  -2.2273  -0.1918   2.2924  11.7450 
+#> 
+#> Coefficients:
+#>            Estimate Std. Error t value Pr(>|t|)    
+#> breath_ecg 0.984194   0.008906   110.5   <2e-16 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#> 
+#> Residual standard error: 3.904 on 529 degrees of freedom
+#> Multiple R-squared:  0.9585, Adjusted R-squared:  0.9584 
+#> F-statistic: 1.221e+04 on 1 and 529 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{verbatim}
+#> Wald Chi-squared test
+\end{verbatim}
+
+\begin{verbatim}
+#>    p-value 
+#> 0.07592432
+\end{verbatim}
+
+\begin{verbatim}
+#>                2.5 %   97.5 %
+#> breath_ecg 0.9666988 1.001689
+\end{verbatim}
+
+\begin{verbatim}
+#> # A tibble: 530 x 2
+#>    breath_chest breath_ecg
+#>           <dbl>      <dbl>
+#>  1         19.5       18.5
+#>  2         18         18.5
+#>  3         18.5       19.5
+#>  4         23.5       19.5
+#>  5         21.5       18.5
+#>  6         16.5       16  
+#>  7         24.5       15.5
+#>  8         22.5       15.5
+#>  9         18         14  
+#> 10         18.5       19.5
+#> # i 520 more rows
+\end{verbatim}
+
+\begin{verbatim}
+#>   breath_chest     breath_ecg   
+#>  Min.   : 6.00   Min.   :11.50  
+#>  1st Qu.:16.50   1st Qu.:18.00  
+#>  Median :18.50   Median :19.00  
+#>  Mean   :18.83   Mean   :18.95  
+#>  3rd Qu.:20.50   3rd Qu.:20.00  
+#>  Max.   :29.00   Max.   :24.50
+\end{verbatim}
+
 \newpage
 
 \hypertarget{references}{%
