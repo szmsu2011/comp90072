@@ -1,3 +1,8 @@
+## ---- ecg-noise
+a01 <- read_ecg("../data-bin/a01.dat")
+a02 <- read_ecg("../data-bin/a02.dat")
+plot(a02, 198000:201000) + plot(frequency(a01))
+
 ## ---- data
 training_set <- c("a01", "a02", "a03", "a04", "b01")
 test_set <- c("c01", "c02", "c03")

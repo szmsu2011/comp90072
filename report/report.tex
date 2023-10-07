@@ -115,6 +115,8 @@
 \newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+\usepackage{algorithm}
+\usepackage{algorithmic}
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -122,7 +124,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Respiratory Rate Determination by Non-Invasive Means},
+  pdftitle={Respiratory Rate Determination by ECG Monitoring},
   pdfauthor={Stephen Su, 844503, COMP90072},
   colorlinks=true,
   linkcolor={Maroon},
@@ -131,7 +133,7 @@
   urlcolor={blue},
   pdfcreator={LaTeX via pandoc}}
 
-\title{Respiratory Rate Determination by Non-Invasive Means}
+\title{Respiratory Rate Determination by ECG Monitoring}
 \author{Stephen Su, 844503, COMP90072}
 \date{}
 
@@ -144,18 +146,116 @@
 \hypertarget{background}{%
 \subsection{Background}\label{background}}
 
-(Penzel et al., 2000).
+Pneumonia is the deadliest infectious disease to children under the age
+of 5, responsible for 740,180 deaths under 5 as of 2019 (World Health
+Organisation, 2022). The worsening symptoms of pneumonia can rapidly
+become life-threatening for young children if not treated on time.
+Nevertheless, the early stage of pneumonia with young children is often
+confused with other less serious respiratory disease with similar
+symptoms. On the other hand, a medical institution cannot provide
+comprehensive monitoring to all its patients for all potential symptoms
+of pneumonia due to limitation of resources. Thus it is of interest to
+develop light-weight, non-evasive methods for detecting the most common
+symptoms of pneumonia, as an early warning to serve as an indication of
+a need for further medical interventions.
+
+In a research outlined in Shamo'on et al. (2004), tachypnoea (average
+respiratory rate \textgreater{} 50 per minute) is one of the critical
+indicators of pneumonia in young children. However, the high volatility
+of breath rate in children poses a major challenge for manual counting
+that is both time-consuming and prone to error. In contrary, automated
+respiratory monitoring often involves machine-measurement of
+chest/abdomen movement or nasal airflow that are resource-costly and
+possibly invasive such that the discomfort from wearing the equipment
+might adversely affect its accuracy.
+
+A potential solution to the problem above arises from the phenomenon of
+\emph{respiratory sinus arrhythmia}, such that the instantaneous heart
+rates increase with inspiration and decrease during expiration (Larsen
+et al., 2010), by monitoring the periodicity of variation in the heart
+rate, it may be possible to determine one's respiratory rate with a
+simple, non-evasive method, such as by a pulse oximeter that is
+resource-friendly. As such, this project attempts to develop an
+efficient \emph{predictive} algorithm to accurately and precisely
+determine respiratory rate from heart rate, as well as briefly discuss
+its limitations and direction for future works.
 
 \hypertarget{the-data}{%
 \subsection{The data}\label{the-data}}
 
-(Goldberger et al., 2000).
+The \emph{apnea-ECG database} (Penzel et al., 2000) on \emph{PhysioNet}
+(Goldberger et al., 2000) provides sufficiently large data sets of
+approximately eight hours long records of electrocardiogram and
+respiratory signals for eight subjects in a study for \emph{sleep
+apnea}. The eight records consist of 100Hz signal from the
+electrocardiogram (ECG), respiratory effort from chest/abdomen
+movements, nasal airflow, and blood O\(_2\) saturation over time.
+
+A major concern of using such data is the misalignment of objective for
+the researches. Study for apnea typically involves subjects with airway
+obstruction, a factor that must be considered for prior to building our
+model. Under the presumption that, subjects in our data might sometimes
+stop breathing, the response variable of interest should be robust from
+the presence of apnea. Therefore, the model will focus on exploring the
+algorithm for determining the respiratory rate from the ECG signal as a
+predictor for the respiratory rate implied by chest movements, assuming
+that for living humans, respiratory efforts are always present.
+
+This study will divide records from the eight subjects into two sets:
+
+\begin{itemize}
+\tightlist
+\item
+  Subjects a01, a02, a03, a04 and b01 form the \emph{training set}.
+\item
+  Subjects c01, c02 and c03 form the \emph{test set} for evaluation.
+\end{itemize}
 
 \newpage
 
 \hypertarget{methodologies-and-implementation}{%
 \section{Methodologies and
 implementation}\label{methodologies-and-implementation}}
+
+\hypertarget{data-wrangling}{%
+\subsection{Data wrangling}\label{data-wrangling}}
+
+\hypertarget{processing-ecg-signals}{%
+\subsubsection{Processing ECG signals}\label{processing-ecg-signals}}
+
+The ECG signal does not provide the heart rate directly. Instead, it is
+a time series of varying electric potential that controls the rhythm of
+the contraction and relaxation of the heart muscle, with a magnitude of
+approximately 0.5mV in absolute value. Such a signal is often masked by
+unwanted noise, such as electric signals from pectoral muscle movement,
+creating a challenge in computing heart rate from the ECG signal.
+
+\begin{figure}
+
+{\centering \includegraphics{report_files/figure-latex/ecg-noise-1} 
+
+}
+
+\caption{Left: sudden spike in noise; right: frequency spectrum of the ECG signal}\label{fig:ecg-noise}
+\end{figure}
+
+Test algorithm:
+
+\begin{algorithm}
+\caption{Your Algorithm Name}
+\begin{algorithmic}[1] % The [1] is to number each line
+\STATE Define your initial state or input
+\WHILE{some condition is true}
+\STATE Do some action
+\IF {some condition}
+\STATE Do another action
+\ELSE
+\STATE Do yet another action
+\ENDIF
+\ENDWHILE
+\RETURN Some output
+\end{algorithmic}
+\end{algorithm}
 
 \newpage
 
@@ -336,16 +436,32 @@ processing}\label{data-wrangling-and-signal-processing}}
 
 \hypertarget{refs}{}
 \begin{CSLReferences}{1}{1}
-\leavevmode\vadjust pre{\hypertarget{ref-physiobank2000}{}}%
+\leavevmode\vadjust pre{\hypertarget{ref-goldberger2000}{}}%
 Goldberger, A. L., Amaral, L. A., Glass, L., Hausdorff, J. M., Ivanov,
 P. C., Mark, R. G., Mietus, J. E., Moody, G. B., Peng, C.-K., \&
 Stanley, H. E. (2000). Physiobank, physiotoolkit, and physionet.
 \emph{Circulation}, \emph{101}(23), e215--e220.
 
-\leavevmode\vadjust pre{\hypertarget{ref-apnea2000}{}}%
+\leavevmode\vadjust pre{\hypertarget{ref-Larsen2010}{}}%
+Larsen, P. D., Tzeng, Y. C., Sin, P. Y. W., \& Galletly, D. C. (2010).
+Respiratory sinus arrhythmia in conscious humans during spontaneous
+respiration. \emph{Respiratory Physiology \& Neurobiology},
+\emph{174}(1--2), 111--118.
+\url{https://doi.org/10.1016/j.resp.2010.04.021}
+
+\leavevmode\vadjust pre{\hypertarget{ref-penzel2000}{}}%
 Penzel, T., Moody, G. B., Mark, R. G., Goldberger, A. L., \& Peter, J.
 H. (2000). The apnea-ecg database. \emph{Computers in Cardiology 2000},
 255--258.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Shamoon2004}{}}%
+Shamo'on, H., Hawamdah, A., Haddadin, R., \& Jmeian, S. (2004).
+Detection of pneumonia among children under six years by clinical
+evaluation. \emph{East Mediterr Health J}, \emph{10}(4-5), 482--487.
+
+\leavevmode\vadjust pre{\hypertarget{ref-WHO2022}{}}%
+World Health Organisation. (2022). \emph{Pneumonia in children}.
+\url{https://www.who.int/news-room/fact-sheets/detail/pneumonia}
 
 \end{CSLReferences}
 
