@@ -35,6 +35,46 @@
 \makeatother
 \usepackage{xcolor}
 \usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{graphicx}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -107,114 +147,185 @@
 (Penzel et al., 2000).
 
 \hypertarget{the-data}{%
-\section{The data}\label{the-data}}
-
-\hypertarget{data-source}{%
-\subsection{Data source}\label{data-source}}
+\subsection{The data}\label{the-data}}
 
 (Goldberger et al., 2000).
 
-\hypertarget{sample-plot}{%
-\subsection{Sample plot}\label{sample-plot}}
+\newpage
 
-\begin{center}\includegraphics{report_files/figure-latex/rr-interval-1} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/rr-interval-2} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/rr-interval-3} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/rr-interval-4} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/rr-interval-5} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/rr-interval-6} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/rr-interval-7} \end{center}
-
-\begin{center}\includegraphics{report_files/figure-latex/rr-interval-8} \end{center}
+\hypertarget{methodologies-and-implementation}{%
+\section{Methodologies and
+implementation}\label{methodologies-and-implementation}}
 
 \newpage
 
-\hypertarget{respiratory-analysis-subject-a02}{%
-\subsection{Respiratory analysis (Subject
-a02)}\label{respiratory-analysis-subject-a02}}
+\hypertarget{appendix-workflow-code-and-output}{%
+\section{Appendix: workflow, code and
+output}\label{appendix-workflow-code-and-output}}
 
-\begin{center}\includegraphics{report_files/figure-latex/resp-1} \end{center}
+\hypertarget{source-code}{%
+\subsection{Source code}\label{source-code}}
 
-\begin{center}\includegraphics{report_files/figure-latex/resp-2} \end{center}
+The source codes for the functions used in the workflow are in the
+\texttt{.R} files at
+\href{https://github.com/szmsu2011/comp90072/blob/main/R}{/R}.
 
-\begin{center}\includegraphics{report_files/figure-latex/resp-3} \end{center}
+\hypertarget{data-wrangling-and-signal-processing}{%
+\subsection{Data wrangling and signal
+processing}\label{data-wrangling-and-signal-processing}}
 
-\begin{center}\includegraphics{report_files/figure-latex/resp-4} \end{center}
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{training\_set }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"a01"}\NormalTok{, }\StringTok{"a02"}\NormalTok{, }\StringTok{"a03"}\NormalTok{, }\StringTok{"a04"}\NormalTok{, }\StringTok{"b01"}\NormalTok{)}
+\NormalTok{test\_set }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"c01"}\NormalTok{, }\StringTok{"c02"}\NormalTok{, }\StringTok{"c03"}\NormalTok{)}
+\NormalTok{hr }\OtherTok{\textless{}{-}} \FunctionTok{fuse\_data}\NormalTok{(}\FunctionTok{map}\NormalTok{(}
+  \FunctionTok{sprintf}\NormalTok{(}\StringTok{"../data{-}bin/\%s.dat"}\NormalTok{, training\_set),}
+  \ControlFlowTok{function}\NormalTok{(ecg\_file) \{}
+\NormalTok{    ecg\_file }\SpecialCharTok{|\textgreater{}}
+      \FunctionTok{read\_ecg}\NormalTok{() }\SpecialCharTok{|\textgreater{}}
+      \FunctionTok{find\_r\_peaks}\NormalTok{() }\SpecialCharTok{|\textgreater{}}
+      \FunctionTok{frequency}\NormalTok{() }\SpecialCharTok{|\textgreater{}}
+      \FunctionTok{down\_sample}\NormalTok{()}
+\NormalTok{  \}}
+\NormalTok{))}
+\NormalTok{resp }\OtherTok{\textless{}{-}} \FunctionTok{fuse\_data}\NormalTok{(}\FunctionTok{map}\NormalTok{(}
+  \FunctionTok{sprintf}\NormalTok{(}\StringTok{"../data{-}bin/\%sr.dat"}\NormalTok{, training\_set),}
+  \ControlFlowTok{function}\NormalTok{(resp\_file) }\FunctionTok{down\_sample}\NormalTok{(}\FunctionTok{read\_resp}\NormalTok{(resp\_file))}
+\NormalTok{))}
+\NormalTok{hr\_test }\OtherTok{\textless{}{-}} \FunctionTok{fuse\_data}\NormalTok{(}\FunctionTok{map}\NormalTok{(}
+  \FunctionTok{sprintf}\NormalTok{(}\StringTok{"../data{-}bin/\%s.dat"}\NormalTok{, test\_set),}
+  \ControlFlowTok{function}\NormalTok{(ecg\_file) \{}
+\NormalTok{    ecg\_file }\SpecialCharTok{|\textgreater{}}
+      \FunctionTok{read\_ecg}\NormalTok{() }\SpecialCharTok{|\textgreater{}}
+      \FunctionTok{find\_r\_peaks}\NormalTok{() }\SpecialCharTok{|\textgreater{}}
+      \FunctionTok{frequency}\NormalTok{() }\SpecialCharTok{|\textgreater{}}
+      \FunctionTok{down\_sample}\NormalTok{()}
+\NormalTok{  \}}
+\NormalTok{))}
+\NormalTok{resp\_test }\OtherTok{\textless{}{-}} \FunctionTok{fuse\_data}\NormalTok{(}\FunctionTok{map}\NormalTok{(}
+  \FunctionTok{sprintf}\NormalTok{(}\StringTok{"../data{-}bin/\%sr.dat"}\NormalTok{, test\_set),}
+  \ControlFlowTok{function}\NormalTok{(resp\_file) }\FunctionTok{down\_sample}\NormalTok{(}\FunctionTok{read\_resp}\NormalTok{(resp\_file))}
+\NormalTok{))}
+\FunctionTok{write\_rds}\NormalTok{(hr, }\StringTok{"../R/hr.rds"}\NormalTok{)}
+\FunctionTok{write\_rds}\NormalTok{(resp, }\StringTok{"../R/resp.rds"}\NormalTok{)}
+\FunctionTok{write\_rds}\NormalTok{(hr\_test, }\StringTok{"../R/hr{-}test.rds"}\NormalTok{)}
+\FunctionTok{write\_rds}\NormalTok{(resp\_test, }\StringTok{"../R/resp{-}test.rds"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
-\begin{center}\includegraphics{report_files/figure-latex/resp-5} \end{center}
+\hypertarget{model-training}{%
+\subsection{Model training}\label{model-training}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{hr }\OtherTok{\textless{}{-}} \FunctionTok{read\_rds}\NormalTok{(}\StringTok{"../R/hr.rds"}\NormalTok{)}
+\NormalTok{resp }\OtherTok{\textless{}{-}} \FunctionTok{read\_rds}\NormalTok{(}\StringTok{"../R/resp.rds"}\NormalTok{)}
+\NormalTok{resp\_df }\OtherTok{\textless{}{-}} \FunctionTok{resp\_dataset}\NormalTok{(hr, resp)}
+\end{Highlighting}
+\end{Shaded}
 
 \begin{verbatim}
-#> opt_lambda 
-#> 7.2698e-06
+#>   opt_lambda 
+#> 1.571851e-06
 \end{verbatim}
 
-\begin{center}\includegraphics{report_files/figure-latex/resp-6} \end{center}
+\begin{center}\includegraphics{report_files/figure-latex/train-1} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{resp\_df}
+\end{Highlighting}
+\end{Shaded}
 
 \begin{verbatim}
-#> 
-#> Call:
-#> lm(formula = breath_chest ~ 0 + breath_ecg, data = resp_df)
-#> 
-#> Residuals:
-#>      Min       1Q   Median       3Q      Max 
-#> -10.2234  -2.2273  -0.1918   2.2924  11.7450 
-#> 
-#> Coefficients:
-#>            Estimate Std. Error t value Pr(>|t|)    
-#> breath_ecg 0.984194   0.008906   110.5   <2e-16 ***
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-#> 
-#> Residual standard error: 3.904 on 529 degrees of freedom
-#> Multiple R-squared:  0.9585, Adjusted R-squared:  0.9584 
-#> F-statistic: 1.221e+04 on 1 and 529 DF,  p-value: < 2.2e-16
-\end{verbatim}
-
-\begin{verbatim}
-#> Wald Chi-squared test
-\end{verbatim}
-
-\begin{verbatim}
-#>    p-value 
-#> 0.07592432
-\end{verbatim}
-
-\begin{verbatim}
-#>                2.5 %   97.5 %
-#> breath_ecg 0.9666988 1.001689
-\end{verbatim}
-
-\begin{verbatim}
-#> # A tibble: 530 x 2
+#> # A tibble: 2,526 x 2
 #>    breath_chest breath_ecg
 #>           <dbl>      <dbl>
-#>  1         19.5       18.5
-#>  2         18         18.5
-#>  3         18.5       19.5
-#>  4         23.5       19.5
-#>  5         21.5       18.5
-#>  6         16.5       16  
-#>  7         24.5       15.5
-#>  8         22.5       15.5
-#>  9         18         14  
-#> 10         18.5       19.5
-#> # i 520 more rows
+#>  1         19.5       15  
+#>  2         22.5       16  
+#>  3         23.5       17.5
+#>  4         20.5       18  
+#>  5         20.5       18  
+#>  6         23         15  
+#>  7         16         18  
+#>  8         20         21.5
+#>  9         20         17.5
+#> 10         18         16.5
+#> # i 2,516 more rows
 \end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(resp\_df)}
+\end{Highlighting}
+\end{Shaded}
 
 \begin{verbatim}
 #>   breath_chest     breath_ecg   
-#>  Min.   : 6.00   Min.   :11.50  
-#>  1st Qu.:16.50   1st Qu.:18.00  
+#>  Min.   : 5.50   Min.   :11.50  
+#>  1st Qu.:15.00   1st Qu.:17.50  
 #>  Median :18.50   Median :19.00  
-#>  Mean   :18.83   Mean   :18.95  
-#>  3rd Qu.:20.50   3rd Qu.:20.00  
-#>  Max.   :29.00   Max.   :24.50
+#>  Mean   :18.46   Mean   :18.96  
+#>  3rd Qu.:21.38   3rd Qu.:20.50  
+#>  Max.   :29.00   Max.   :26.50
+\end{verbatim}
+
+\hypertarget{model-diagnostics}{%
+\subsection{Model diagnostics}\label{model-diagnostics}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{c}\NormalTok{(}\StringTok{"R{-}F cor"} \OtherTok{=} \FunctionTok{with}\NormalTok{(resp\_df, }\FunctionTok{cor}\NormalTok{(breath\_chest }\SpecialCharTok{{-}}\NormalTok{ breath\_ecg, breath\_ecg)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+#>    R-F cor 
+#> -0.3976376
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{test }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(breath\_chest }\SpecialCharTok{\textasciitilde{}} \DecValTok{0} \SpecialCharTok{+}\NormalTok{ breath\_ecg, resp\_df)}
+\FunctionTok{c}\NormalTok{(}\StringTok{"p{-}value"} \OtherTok{=} \FunctionTok{unname}\NormalTok{(}\FunctionTok{pchisq}\NormalTok{(}
+  \FunctionTok{sum}\NormalTok{(resp\_df}\SpecialCharTok{$}\NormalTok{breath\_ecg}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ (}\FunctionTok{coef}\NormalTok{(test) }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{)}\SpecialCharTok{\^{}}\DecValTok{2} \SpecialCharTok{*}
+\NormalTok{    (}\FunctionTok{nrow}\NormalTok{(resp\_df) }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{) }\SpecialCharTok{/} \FunctionTok{sum}\NormalTok{(}\FunctionTok{residuals}\NormalTok{(test)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{), }\DecValTok{1}\NormalTok{,}
+  \AttributeTok{lower.tail =} \ConstantTok{FALSE}
+\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+#>      p-value 
+#> 2.983174e-13
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{confint}\NormalTok{(test)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+#>                2.5 %    97.5 %
+#> breath_ecg 0.9521173 0.9724053
+\end{verbatim}
+
+\hypertarget{model-evaluation}{%
+\subsection{Model evaluation}\label{model-evaluation}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{hr\_test }\OtherTok{\textless{}{-}} \FunctionTok{read\_rds}\NormalTok{(}\StringTok{"../R/hr{-}test.rds"}\NormalTok{)}
+\NormalTok{resp\_test }\OtherTok{\textless{}{-}} \FunctionTok{read\_rds}\NormalTok{(}\StringTok{"../R/resp{-}test.rds"}\NormalTok{)}
+\NormalTok{resp\_dt }\OtherTok{\textless{}{-}} \FunctionTok{resp\_dataset}\NormalTok{(hr\_test, resp\_test, }\FloatTok{1.571851e{-}06}\NormalTok{)}
+\FunctionTok{c}\NormalTok{(}\StringTok{"RMSEP"} \OtherTok{=} \FunctionTok{with}\NormalTok{(resp\_dt, }\FunctionTok{sqrt}\NormalTok{(}\FunctionTok{mean}\NormalTok{((breath\_chest }\SpecialCharTok{{-}}\NormalTok{ breath\_ecg)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{))))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+#>    RMSEP 
+#> 5.489861
 \end{verbatim}
 
 \newpage

@@ -18,7 +18,6 @@ install.packages("xaringanthemer")
 install.packages("tidyverse")
 install.packages("zoo")
 install.packages("patchwork")
-install.packages("Rcpp")
 install.packages("reticulate")
 ```
 
