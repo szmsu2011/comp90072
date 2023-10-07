@@ -259,6 +259,38 @@ creating a challenge in computing heart rate from the ECG signal.
 \end{algorithmic}
 \end{algorithm}
 
+\begin{algorithm}
+\caption{R peak timestamping with phase correction}
+\begin{algorithmic}
+\STATE Take filtered $\mathbf{z} \in \mathbb{R}^n$ as the 100-Hz input
+\STATE Set moving threshold $\mathbf{c}$ as half of rolling maximum
+\FOR{$t = 1, ..., 100$}
+\STATE $c_t \leftarrow +\infty$
+\ENDFOR
+\FOR{$t = 101, ..., n$}
+\STATE $c_t \leftarrow \frac{1}{2}\text{max}\{z_{t - 100}, ..., z_t\}$
+\ENDFOR
+\STATE Create thresholding indicator $\boldsymbol{\iota^{(1)}}$
+\FOR{$t = 1, ..., n$}
+\STATE $\iota^{(1)}_t \leftarrow I(z_t > \text{max}\{c_t, F^{-1}_{Z}(0.95)\})$
+\ENDFOR
+\STATE Create concave-peak indicator $\boldsymbol{\iota^{(2)}}$
+\FOR{$t = 1, n$}
+\STATE $\iota^{(2)}_t \leftarrow 0$
+\ENDFOR
+\FOR{$t = 2, ..., n - 1$}
+\STATE $\iota^{(2)}_t \leftarrow I[I(z_{t + 1} - z_t > 0) - I(z_t - z_{t - 1} > 0) = -1]$
+\ENDFOR
+\STATE Preliminary timestamps for R peak $\mathbf{p} \leftarrow (t = 1, ..., n | \iota^{(1)}_t \land \iota^{(2)}_t \text{ is True})$
+\STATE Remove abnormal timestamps in $\mathbf{p}$ with R-R intervals of < 300ms
+\STATE Correct phase-shifts caused by fast Fourier transform
+\FOR{$t \in \{\mathbf{p}\}$}
+\STATE $p_{p = t} \leftarrow \text{argmax}_t\{z_{t - 4}, ..., z_t, ... z_{t + 4}\}$
+\ENDFOR
+\RETURN $\mathbf{p}$ as the timestamps of the R peak
+\end{algorithmic}
+\end{algorithm}
+
 \newpage
 
 \hypertarget{appendix-workflow-code-and-output}{%
