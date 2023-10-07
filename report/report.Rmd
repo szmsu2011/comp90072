@@ -80,21 +80,23 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 ```{r ecg-noise, fig.height = 3.2, fig.cap = "Left: sudden spike in noise; right: frequency spectrum of the ECG signal"}
 ```
 
-Test algorithm:
-
 \begin{algorithm}
-\caption{Your Algorithm Name}
-\begin{algorithmic}[1] % The [1] is to number each line
-\STATE Define your initial state or input
-\WHILE{some condition is true}
-\STATE Do some action
-\IF {some condition}
-\STATE Do another action
-\ELSE
-\STATE Do yet another action
-\ENDIF
-\ENDWHILE
-\RETURN Some output
+\caption{5-20Hz band-pass filter with fast Fourier transform}
+\begin{algorithmic}
+\STATE Take $\mathbf{x} \in \mathbb{R}^n$ as the 100-Hz input
+\STATE Obtain $\mathbf{y}$ by fast Fourier transform on $\mathbf{x}$
+\FOR{$t = 1, ..., n$}
+\STATE $y_t \leftarrow \sum_{k = 1}^n{x_k}\text{exp}(-2\pi i(k - 1)(t - 1) / n)$
+\ENDFOR
+\STATE Zero corresponding (Nyquist) frequency bins for 0-5, 20-50Hz
+\FOR{$t = 1, ..., n \land (t \in (0.2n, 0.8n) \lor t > 0.95n \lor t < 0.05n)$}
+\STATE $y_t \leftarrow 0 + 0i$
+\ENDFOR
+\STATE Obtain $\mathbf{z}$ by normalised inverse fast Fourier transform on $\mathbf{y}$
+\FOR{$t = 1, ..., n$}
+\STATE $z_t \leftarrow \sum_{k = 1}^n{y_k}\text{exp}(2\pi i(k - 1)(t - 1) / n) / n$
+\ENDFOR
+\RETURN $\text{Re}(\mathbf{z}) \in \mathbb{R}^n$ as the 100-Hz output
 \end{algorithmic}
 \end{algorithm}
 

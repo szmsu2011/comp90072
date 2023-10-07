@@ -10,7 +10,7 @@ frequency.ecg_ts <- function(x, freq = 100, sample_events = 1e5) {
   return(x_freq)
 }
 
-## 5-20 Hz filter with fast fourier transform
+## 5-20 Hz filter with fast Fourier transform
 noise_filter <- function(x) {
   stopifnot(inherits(x, "ecg_ts"))
   x_fft <- fft(x)
@@ -22,7 +22,7 @@ noise_filter <- function(x) {
   return(x_filtered)
 }
 
-## Correct phase-shifts from fast fourier transform
+## Correct phase-shifts from fast Fourier transform
 correct_phase <- function(x) {
   stopifnot(inherits(x, "ecg_rts"))
   possible_shifts <- with(x, cbind(
