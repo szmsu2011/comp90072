@@ -283,7 +283,7 @@ creating a challenge in computing heart rate from the ECG signal.
 \STATE Remove abnormal timestamps in $\mathbf{p}$ with R-R intervals of < 300ms
 \STATE Correct phase-shifts caused by fast Fourier transform
 \FOR{$t \in \{\mathbf{p}\}$}
-\STATE $p | p = t \leftarrow \text{argmax}_t\{x_{t - 4}, ..., x_t, ... x_{t + 4}\}$
+\STATE $p | p = t \leftarrow \text{argmax}_{i = t - 4, ..., t, ..., t + 4} x_i$
 \ENDFOR
 \RETURN $\mathbf{p}$ the timestamps of the R peak
 \end{algorithmic}
@@ -311,7 +311,7 @@ creating a challenge in computing heart rate from the ECG signal.
 \STATE Construct B-spline bases $\mathbf{B}$ derived from natural cubic spline bases about all possible knots of $\mathbf{t}$
 \STATE Penalty matrix $\boldsymbol{\Omega} \leftarrow \{\omega_{jk} = \int_T {B_j^{''}(s)B_k^{''}(s)}ds | B_j(t_i) = (\mathbf{B})_{ij}\}$
 \IF{argument $\lambda$ is missing}
-\STATE $\lambda \leftarrow \text{argmin}_\lambda (1 - \text{tr}(\mathbf{B}(\mathbf{B}^\top\mathbf{B} + \lambda\boldsymbol{\Omega})^{-1}\mathbf{B}^\top) / \text{dim}(\mathbf{a}))^{-2}||(\mathbf{I} - \mathbf{B}(\mathbf{B}^\top\mathbf{B} + \lambda\boldsymbol{\Omega})^{-1}\mathbf{B}^\top)\mathbf{a}||^2$
+\STATE $\lambda \leftarrow \text{argmin}_{\lambda > 0} (1 - \text{tr}(\mathbf{B}(\mathbf{B}^\top\mathbf{B} + \lambda\boldsymbol{\Omega})^{-1}\mathbf{B}^\top) / \text{dim}(\mathbf{a}))^{-2}||(\mathbf{I} - \mathbf{B}(\mathbf{B}^\top\mathbf{B} + \lambda\boldsymbol{\Omega})^{-1}\mathbf{B}^\top)\mathbf{a}||^2$
 \ENDIF
 \STATE $\mathbf{\hat{a}} \leftarrow \mathbf{B}(\mathbf{B}^\top\mathbf{B} + \lambda\boldsymbol{\Omega})^{-1}\mathbf{B}^\top\mathbf{a}$
 \STATE Count the number of times the curves $(\mathbf{t}, \mathbf{a})$ and $(\mathbf{t}, \mathbf{\hat{a}})$ cross (equivalent to zero-crossing for $(\mathbf{t}, \mathbf{a} - \mathbf{\hat{a}})$)
