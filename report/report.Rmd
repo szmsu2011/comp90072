@@ -104,14 +104,14 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 \caption{R peak timestamping with phase correction}
 \begin{algorithmic}
 \STATE Take the original $\mathbf{x} \in \mathbb{R}^n$ and the filtered $\mathbf{z} \in \mathbb{R}^n$ as the 100-Hz inputs
-\STATE Set moving threshold $\mathbf{c}$ as half of rolling maximum
-\STATE $(c_t | t = 1, ..., 100) \leftarrow (+\infty)_{\times 100}$
+\STATE Set moving threshold $\mathbf{b}$ as half of rolling maximum
+\STATE $(b_t | t = 1, ..., 100) \leftarrow (+\infty)_{\times 100}$
 \FOR{$t = 101, ..., n$}
-\STATE $c_t \leftarrow \frac{1}{2}\text{max}\{z_{t - 100}, ..., z_t\}$
+\STATE $b_t \leftarrow \frac{1}{2}\text{max}\{z_{t - 100}, ..., z_t\}$
 \ENDFOR
 \STATE Create thresholding indicator $\boldsymbol{\iota^{(1)}}$
 \FOR{$t = 1, ..., n$}
-\STATE $\iota^{(1)}_t \leftarrow I(z_t > \text{max}\{c_t, F^{-1}_{Z}(0.95)\})$
+\STATE $\iota^{(1)}_t \leftarrow I(z_t > \text{max}\{b_t, F^{-1}_{Z}(0.95)\})$
 \ENDFOR
 \STATE Create concave-peak indicator $\boldsymbol{\iota^{(2)}}$
 \FOR{$t = 1, n$}
@@ -143,6 +143,39 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 \RETURN $\mathbf{h}$ the heart rates per minute at frequency $\nu$
 \end{algorithmic}
 \end{algorithm}
+
+\begin{algorithm}
+\caption{Smoothing spline crossing for counting cycles of nonstationary pseudosinusoidal oscillations, for varying heart rates/chest movements}
+\begin{algorithmic}
+\STATE Take a time series vector $\mathbf{a}$ at any frequency, and the optional argument $\lambda$ the regularisation parameter
+\STATE $\mathbf{t} \leftarrow (1, ..., \text{dim}(\mathbf{a}))^\top$ as the indexing vector
+\STATE Construct B-spline bases $\mathbf{B}$ derived from natural cubic spline bases about all possible knots of $\mathbf{t}$
+\STATE Penalty matrix $\boldsymbol{\Omega} \leftarrow \{\omega_{jk} = \int_T {B_j^{''}(s)B_k^{''}(s)}ds | B_j(t_i) = (\mathbf{B})_{ij}\}$
+\IF{argument $\lambda$ is missing}
+\STATE $\lambda \leftarrow \text{argmin}_\lambda (1 - \text{tr}(\mathbf{B}(\mathbf{B}^\top\mathbf{B} + \lambda\boldsymbol{\Omega})^{-1}\mathbf{B}^\top) / \text{dim}(\mathbf{a}))^{-2}||(\mathbf{I} - \mathbf{B}(\mathbf{B}^\top\mathbf{B} + \lambda\boldsymbol{\Omega})^{-1}\mathbf{B}^\top)\mathbf{a}||^2$
+\ENDIF
+\STATE $\mathbf{\hat{a}} \leftarrow \mathbf{B}(\mathbf{B}^\top\mathbf{B} + \lambda\boldsymbol{\Omega})^{-1}\mathbf{B}^\top\mathbf{a}$
+\STATE Count the number of times the curves $(\mathbf{t}, \mathbf{a})$ and $(\mathbf{t}, \mathbf{\hat{a}})$ cross (equivalent to zero-crossing for $(\mathbf{t}, \mathbf{a} - \mathbf{\hat{a}})$)
+\RETURN half of the count obtained above as the approximated cycles
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{Deriving breath rates from chest movements and heart rates}
+\begin{algorithmic}
+\STATE Take $\mathbf{h}$ the heart rates per minute and $\mathbf{c}$ the chest movements signal (either at 100Hz or down-sampled) where both time series have aligned indices and identical frequency
+\STATE For both $\mathbf{h}$ and $\mathbf{c}$, remove elements of index where $c_t = \text{NA is True}$
+\FOR{each record of all the subjects}
+\STATE Partition each of $\mathbf{h}$ and $\mathbf{c}$ into segments of 60-second data
+\ENDFOR
+\STATE Drop the remainder (last segment), which is less than 60 seconds
+\IF{$\mathbf{h}$ and $\mathbf{c}$ for more than one subject is input}
+\STATE Bind $\mathbf{h}$ and $\mathbf{c}$ of all subjects together
+\ENDIF
+\RETURN [Incomplete]
+\end{algorithmic}
+\end{algorithm}
+
 \newpage
 
 # Appendix: workflow, code and output
