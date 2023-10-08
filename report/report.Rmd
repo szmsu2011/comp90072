@@ -103,11 +103,9 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 \begin{algorithm}
 \caption{R peak timestamping with phase correction}
 \begin{algorithmic}
-\STATE Take filtered $\mathbf{z} \in \mathbb{R}^n$ as the 100-Hz input
+\STATE Take the original $\mathbf{x} \in \mathbb{R}^n$ and the filtered $\mathbf{z} \in \mathbb{R}^n$ as the 100-Hz inputs
 \STATE Set moving threshold $\mathbf{c}$ as half of rolling maximum
-\FOR{$t = 1, ..., 100$}
-\STATE $c_t \leftarrow +\infty$
-\ENDFOR
+\STATE $(c_t | t = 1, ..., 100) \leftarrow (+\infty)_{\times 100}$
 \FOR{$t = 101, ..., n$}
 \STATE $c_t \leftarrow \frac{1}{2}\text{max}\{z_{t - 100}, ..., z_t\}$
 \ENDFOR
@@ -126,12 +124,25 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 \STATE Remove abnormal timestamps in $\mathbf{p}$ with R-R intervals of < 300ms
 \STATE Correct phase-shifts caused by fast Fourier transform
 \FOR{$t \in \{\mathbf{p}\}$}
-\STATE $p_{p = t} \leftarrow \text{argmax}_t\{z_{t - 4}, ..., z_t, ... z_{t + 4}\}$
+\STATE $p | p = t \leftarrow \text{argmax}_t\{x_{t - 4}, ..., x_t, ... x_{t + 4}\}$
 \ENDFOR
-\RETURN $\mathbf{p}$ as the timestamps of the R peak
+\RETURN $\mathbf{p}$ the timestamps of the R peak
 \end{algorithmic}
 \end{algorithm}
 
+\begin{algorithm}
+\caption{Deriving instantaneous heart rates from R peak timestamps}
+\begin{algorithmic}
+\STATE Take $\mathbf{p}$ the timestamps of the R peak as the input, and $\nu$ as an argument for the frequency unit of $\mathbf{p}$
+\STATE $m \leftarrow \text{dim}(\mathbf{p})$ dimension of $\mathbf{p}$
+\STATE Compute the R-R intervals $\mathbf{d}$
+\STATE $(d_t | t = 1, ..., p_1) \leftarrow (\text{NA})_{\times p_1}$
+\STATE $(d_t | t = p_1 + 1, ..., p_{m}) \leftarrow ((p_2 - p_1)_{\times (p_2 - p_1)}, (p_3 - p_2)_{\times (p_3 - p_2)}, ..., (p_{m} - p_{m - 1})_{\times (p_{m} - p_{m - 1})})^\top$
+\STATE Convert R-R intervals into heart rates per minute $\mathbf{h}$
+\STATE $\mathbf{h} \leftarrow 60 \cdot \nu / \mathbf{d}$
+\RETURN $\mathbf{h}$ the heart rates per minute at frequency $\nu$
+\end{algorithmic}
+\end{algorithm}
 \newpage
 
 # Appendix: workflow, code and output
