@@ -82,7 +82,7 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 
 \begin{algorithm}
 \caption{5-20Hz band-pass filter with fast Fourier transform}
-\begin{algorithmic}
+\begin{algorithmic}[1]
 \STATE Take $\mathbf{x} \in \mathbb{R}^n$ as the 100-Hz input
 \STATE Obtain $\mathbf{y}$ by fast Fourier transform on $\mathbf{x}$
 \FOR{$t = 1, ..., n$}
@@ -102,7 +102,7 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 
 \begin{algorithm}
 \caption{R peak timestamping with phase correction}
-\begin{algorithmic}
+\begin{algorithmic}[1]
 \STATE Take the original $\mathbf{x} \in \mathbb{R}^n$ and the filtered $\mathbf{z} \in \mathbb{R}^n$ as the 100-Hz inputs
 \STATE Set moving threshold $\mathbf{b}$ as half of rolling maximum
 \STATE $(b_t | t = 1, ..., 100) \leftarrow (+\infty)_{\times 100}$
@@ -132,7 +132,7 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 
 \begin{algorithm}
 \caption{Deriving instantaneous heart rates from R peak timestamps}
-\begin{algorithmic}
+\begin{algorithmic}[1]
 \STATE Take $\mathbf{p}$ the timestamps of the R peak as the input, and $\nu$ as an argument for the frequency unit of $\mathbf{p}$
 \STATE $m \leftarrow \text{dim}(\mathbf{p})$ dimension of $\mathbf{p}$
 \STATE Compute the R-R intervals $\mathbf{d}$
@@ -146,7 +146,7 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 
 \begin{algorithm}
 \caption{Smoothing spline crossing for counting cycles of nonstationary pseudosinusoidal oscillations, for varying heart rates/chest movements}
-\begin{algorithmic}
+\begin{algorithmic}[1]
 \STATE Take a time series vector $\mathbf{a}$ at any frequency, and the optional argument $\lambda$ the regularisation parameter
 \STATE $\mathbf{t} \leftarrow (1, ..., \text{dim}(\mathbf{a}))^\top$ as the indexing vector
 \STATE Construct B-spline bases $\mathbf{B}$ derived from natural cubic spline bases about all possible knots of $\mathbf{t}$
@@ -161,10 +161,10 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 \end{algorithm}
 
 \begin{algorithm}
-\caption{Deriving breath rates from chest movements and heart rates}
-\begin{algorithmic}
-\STATE Take $\mathbf{h}$ the heart rates per minute and $\mathbf{c}$ the chest movements signal (either at 100Hz or down-sampled) where both time series have aligned indices and identical frequency
-\STATE For both $\mathbf{h}$ and $\mathbf{c}$, remove elements of index where $c_t = \text{NA is True}$
+\caption{Deriving breath rate from heart rate based on chest movements}
+\begin{algorithmic}[1]
+\STATE Take $\mathbf{h}$ the heart rates per minute and $\mathbf{c}$ the chest movements signal (either at 100Hz or down-sampled) where both time series have aligned indices and identical frequency; and optional argument $\lambda_\text{opt}$ (only in model evaluation with test data)
+\STATE For both $\mathbf{h}$ and $\mathbf{c}$, remove elements of index where $c_t = \text{NA}$
 \FOR{each record of all the subjects}
 \STATE Partition each of $\mathbf{h}$ and $\mathbf{c}$ into segments of 60-second data
 \ENDFOR
@@ -172,7 +172,17 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 \IF{$\mathbf{h}$ and $\mathbf{c}$ for more than one subject is input}
 \STATE Bind $\mathbf{h}$ and $\mathbf{c}$ of all subjects together
 \ENDIF
-\RETURN [Incomplete]
+\FOR{each 60-second segment of $\mathbf{c}$}
+\STATE Pass each minute of $\mathbf{c}$ into Algorithm 4 (the smoothing spline crossing, without specifying $\lambda$) to compute the true rate of breath based on chest movements, and output $\rightarrow \mathbf{r}$
+\ENDFOR
+\IF{argument $\lambda_\text{opt}$ is missing}
+\STATE $\lambda_\text{opt} \leftarrow \text{argmin}_{\lambda > 0} ||\mathbf{r} - \hat{f}(\mathbf{h}; \lambda)||^2$ where $\hat{f}$ is the Algorithm 4: applied on each minute of $\mathbf{h}$ given $\lambda$
+\ENDIF
+\STATE $\hat{\lambda}_\text{opt} \leftarrow \lambda_\text{opt}$: if its value is obtained by Step 14 $\hat{\lambda}_\text{opt}$ is the estimate of $\lambda_\text{opt}$ derived from the training data; otherwise, if $\lambda_\text{opt}$ is passed as an argument, then the purpose of this algorithm is model testing
+\FOR{each 60-second segment of $\mathbf{h}$}
+\STATE Pass each minute of $\mathbf{h}$ into Algorithm 4 (with argument of $\lambda = \hat{\lambda}_\text{opt}$) to compute the derived rate of breath from heart rate, and output $\rightarrow \mathbf{\hat{r}}$ which is the model's estimate of $\mathbf{r}$: the chest rate of breath
+\ENDFOR
+\RETURN data matrix $(\mathbf{r}, \mathbf{\hat{r}})$, a bi-variate time series (minutely), $\mathbf{r} :=$ "count of breaths by chest movements (observations)" and $\mathbf{\hat{r}} :=$ "number of breaths derived by cardio-activities of that minute (fitted values)", and most importantly $\hat{\lambda}_\text{opt}$ the trained parameter for our final model!
 \end{algorithmic}
 \end{algorithm}
 
