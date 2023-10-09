@@ -173,7 +173,7 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 \end{algorithmic}
 \end{algorithm}
 
-```{r sszc, fig.height = 3.8}
+```{r sszc, fig.height = 3.8, fig.cap = "Time series of chest movement (top) and heart rates (bottom) at 1Hz for 1 minute. Blue: naive zero-crossing; red: smoothing spline crossing. We can clearly see that smoothing spline gives a better count."}
 ```
 
 ### Model training
