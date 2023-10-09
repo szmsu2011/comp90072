@@ -37,14 +37,11 @@ plot.ecg_rts <- function(x, events = seq(3 * freq, 23 * freq),
   p <- plot.ecg_ts(x$ecg, events, freq, resolution)
   rp_data <- tibble(
     time = seq_along(x$ecg) / freq,
-    r_peak = (seq_along(x$ecg) %in% x$r_peak) * x$ecg / resolution,
-    type = "Estimated R-peaks"
+    r_peak = (seq_along(x$ecg) %in% x$r_peak) * x$ecg / resolution
   ) |>
     slice(events) |>
     filter(r_peak > 0)
-  p <- p +
-    geom_point(aes(y = r_peak, col = type), data = rp_data) +
-    theme(legend.title = element_blank(), legend.position = "top")
+  p <- p + geom_point(aes(y = r_peak), data = rp_data, col = "red")
   return(p)
 }
 
@@ -74,10 +71,6 @@ plot.resp_ts <- function(x, events = seq_len(60 * freq),
 ## S3 method for class "ecg_hr"
 plot.ecg_hr <- function(x, events = seq(5 * freq, 65 * freq), freq = 100) {
   p <- plot.ecg_ts(x, events, freq, 1) +
-    labs(y = "Instantaneous heart rate (BPM)") +
-    geom_smooth(
-      formula = y ~ s(x, k = round(diff(range(events)) / freq / 2)),
-      method = "gam", linewidth = 0.65
-    )
+    labs(y = "Heart rate (BPM)")
   return(p)
 }

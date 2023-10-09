@@ -3,6 +3,19 @@ a01 <- read_ecg("../data-bin/a01.dat")
 a02 <- read_ecg("../data-bin/a02.dat")
 plot(a02, 198000:201000) + plot(frequency(a01))
 
+## ---- ecg-process
+p1 <- plot(a02, 1000:2000) +
+  labs(title = "(1) Raw ECG signal")
+p2 <- plot(noise_filter(a02), 1000:2000) +
+  labs(title = "(2) FFT filter to suppress P and T waves")
+p3 <- plot(find_r_peaks(noise_filter(a02)), 1000:2000) +
+  labs(title = "(3) Find R peak on filtered signal")
+p4 <- plot(find_r_peaks(a02), 1000:2000) +
+  labs(title = "(4) Map R peak to raw signal with phase correction")
+p5 <- plot(frequency(find_r_peaks(a02)), 1000:2000) +
+  labs(title = "(5) Derive heart rate from R-R intervals")
+p1 / p2 / p3 / p4 / p5
+
 ## ---- data
 training_set <- c("a01", "a02", "a03", "a04", "b01")
 test_set <- c("c01", "c02", "c03")

@@ -289,6 +289,10 @@ creating a challenge in computing heart rate from the ECG signal.
 \end{algorithmic}
 \end{algorithm}
 
+\hypertarget{heart-rate-derivation-from-ecg-signals}{%
+\subsubsection{Heart rate derivation from ECG
+signals}\label{heart-rate-derivation-from-ecg-signals}}
+
 \begin{algorithm}
 \caption{Deriving instantaneous heart rates from R peak timestamps}
 \begin{algorithmic}[1]
@@ -302,6 +306,22 @@ creating a challenge in computing heart rate from the ECG signal.
 \RETURN $\mathbf{h}$ the heart rates per minute at frequency $\nu$
 \end{algorithmic}
 \end{algorithm}
+
+\newpage
+
+\hypertarget{visualising-ecg-signal-processing}{%
+\subsubsection{Visualising ECG signal
+processing}\label{visualising-ecg-signal-processing}}
+
+\begin{center}\includegraphics{report_files/figure-latex/ecg-process-1} \end{center}
+
+\hypertarget{modelling-rate-of-breathing-by-heart-rate}{%
+\subsection{Modelling rate of breathing by heart
+rate}\label{modelling-rate-of-breathing-by-heart-rate}}
+
+\hypertarget{the-smoothing-spline-crossing-algorithm}{%
+\subsubsection{The smoothing spline crossing
+algorithm}\label{the-smoothing-spline-crossing-algorithm}}
 
 \begin{algorithm}
 \caption{Smoothing spline crossing for counting cycles of nonstationary pseudosinusoidal oscillations, for varying heart rates/chest movements}
@@ -318,6 +338,9 @@ creating a challenge in computing heart rate from the ECG signal.
 \RETURN half of the count obtained above as the approximated cycles
 \end{algorithmic}
 \end{algorithm}
+
+\hypertarget{model-training}{%
+\subsubsection{Model training}\label{model-training}}
 
 \begin{algorithm}
 \caption{Deriving breath rate from heart rate based on chest movements}
@@ -344,6 +367,12 @@ creating a challenge in computing heart rate from the ECG signal.
 \RETURN data matrix $(\mathbf{r}, \mathbf{\hat{r}})$, a bi-variate time series (minutely), $\mathbf{r} :=$ "count of breaths by chest movements (observations)" and $\mathbf{\hat{r}} :=$ "number of breaths derived by cardio-activities of that minute (fitted values)", and most importantly $\hat{\lambda}_\text{opt}$ the trained parameter for our final model!
 \end{algorithmic}
 \end{algorithm}
+
+\hypertarget{model-diagnostics}{%
+\subsection{Model diagnostics}\label{model-diagnostics}}
+
+\hypertarget{model-evaluation}{%
+\subsection{Model evaluation}\label{model-evaluation}}
 
 \newpage
 
@@ -401,8 +430,8 @@ processing}\label{data-wrangling-and-signal-processing}}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{model-training}{%
-\subsection{Model training}\label{model-training}}
+\hypertarget{model-training-1}{%
+\subsection{Model training}\label{model-training-1}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -458,8 +487,8 @@ processing}\label{data-wrangling-and-signal-processing}}
 #>  Max.   :29.00   Max.   :26.50
 \end{verbatim}
 
-\hypertarget{model-diagnostics}{%
-\subsection{Model diagnostics}\label{model-diagnostics}}
+\hypertarget{model-diagnostics-1}{%
+\subsection{Model diagnostics}\label{model-diagnostics-1}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -499,8 +528,8 @@ processing}\label{data-wrangling-and-signal-processing}}
 #> breath_ecg 0.9521173 0.9724053
 \end{verbatim}
 
-\hypertarget{model-evaluation}{%
-\subsection{Model evaluation}\label{model-evaluation}}
+\hypertarget{model-evaluation-1}{%
+\subsection{Model evaluation}\label{model-evaluation-1}}
 
 \begin{Shaded}
 \begin{Highlighting}[]

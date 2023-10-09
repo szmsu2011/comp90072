@@ -130,6 +130,8 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 \end{algorithmic}
 \end{algorithm}
 
+### Heart rate derivation from ECG signals
+
 \begin{algorithm}
 \caption{Deriving instantaneous heart rates from R peak timestamps}
 \begin{algorithmic}[1]
@@ -143,6 +145,17 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 \RETURN $\mathbf{h}$ the heart rates per minute at frequency $\nu$
 \end{algorithmic}
 \end{algorithm}
+
+\newpage
+
+### Visualising ECG signal processing
+
+```{r ecg-process, fig.height = 11, fig.width = 7}
+```
+
+## Modelling rate of breathing by heart rate
+
+### The smoothing spline crossing algorithm
 
 \begin{algorithm}
 \caption{Smoothing spline crossing for counting cycles of nonstationary pseudosinusoidal oscillations, for varying heart rates/chest movements}
@@ -159,6 +172,8 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 \RETURN half of the count obtained above as the approximated cycles
 \end{algorithmic}
 \end{algorithm}
+
+### Model training
 
 \begin{algorithm}
 \caption{Deriving breath rate from heart rate based on chest movements}
@@ -185,6 +200,10 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 \RETURN data matrix $(\mathbf{r}, \mathbf{\hat{r}})$, a bi-variate time series (minutely), $\mathbf{r} :=$ "count of breaths by chest movements (observations)" and $\mathbf{\hat{r}} :=$ "number of breaths derived by cardio-activities of that minute (fitted values)", and most importantly $\hat{\lambda}_\text{opt}$ the trained parameter for our final model!
 \end{algorithmic}
 \end{algorithm}
+
+## Model diagnostics
+
+## Model evaluation
 
 \newpage
 
