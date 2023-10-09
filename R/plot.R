@@ -41,7 +41,7 @@ plot.ecg_rts <- function(x, events = seq(3 * freq, 23 * freq),
   ) |>
     slice(events) |>
     filter(r_peak > 0)
-  p <- p + geom_point(aes(y = r_peak), data = rp_data, col = "red")
+  p <- p + geom_point(aes(y = r_peak), data = rp_data, col = 2)
   return(p)
 }
 

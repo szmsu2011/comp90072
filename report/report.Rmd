@@ -173,6 +173,9 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 \end{algorithmic}
 \end{algorithm}
 
+```{r sszc, fig.height = 3.8}
+```
+
 ### Model training
 
 \begin{algorithm}

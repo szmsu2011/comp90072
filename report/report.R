@@ -16,6 +16,22 @@ p5 <- plot(frequency(find_r_peaks(a02)), 1000:2000) +
   labs(title = "(5) Derive heart rate from R-R intervals")
 p1 / p2 / p3 / p4 / p5
 
+## ---- sszc
+a02r <- down_sample(read_resp("../data-bin/a02r.dat"))
+ph <- plot(down_sample(frequency(find_r_peaks(a02))), 5:60, freq = 1)
+ph <- ph + geom_hline(yintercept = mean(ph$data$voltage), col = 4) +
+  geom_line(aes(y = s), col = 2, data = tibble(
+    time = ph$data$time,
+    s = with(ph$data, smooth.spline(time, voltage, lambda = 1.57e-6)$y)
+  ))
+pr <- plot(a02r, 5:60, freq = 1, which = "Resp C")
+pr <- pr + geom_hline(yintercept = mean(pr$data$voltage), col = 4) +
+  geom_line(aes(y = s), col = 2, data = tibble(
+    time = pr$data$time,
+    s = with(pr$data, smooth.spline(time, voltage)$y)
+  ))
+pr / ph
+
 ## ---- data
 training_set <- c("a01", "a02", "a03", "a04", "b01")
 test_set <- c("c01", "c02", "c03")
