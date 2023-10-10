@@ -173,7 +173,7 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 \end{algorithmic}
 \end{algorithm}
 
-```{r sszc, fig.height = 3.8, fig.cap = "Time series of chest movement (top) and heart rates (bottom) at 1Hz for 1 minute. Blue: naive zero-crossing; red: smoothing spline crossing. We can clearly see that smoothing spline gives a better count."}
+```{r sszc, fig.height = 3.8, fig.cap = "Time series of chest movement (top) and heart rates (bottom) at 1Hz for 1 minute. Blue: naive zero-crossing gives a count of 11.5 and 6 breaths; red: smoothing spline crossing gives a count of 19.5 and 16.5 breaths. We can clearly see that smoothing spline performs much better in counting breaths."}
 ```
 
 ### Model training
@@ -206,6 +206,9 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 
 ## Model diagnostics
 
+```{r resid-check, fig.height = 3.2}
+```
+
 ## Model evaluation
 
 \newpage
@@ -223,7 +226,9 @@ The source codes for the functions used in the workflow are in the `.R` files at
 
 ## Model training
 
-```{r train, echo = TRUE}
+```{r train, echo = TRUE, eval = FALSE}
+```
+```{r result, echo = TRUE}
 ```
 
 ## Model diagnostics

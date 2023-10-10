@@ -32,6 +32,24 @@ pr <- pr + geom_hline(yintercept = mean(pr$data$voltage), col = 4) +
   ))
 pr / ph
 
+## ---- resid-check
+hr <- read_rds("../R/hr.rds")
+resp <- read_rds("../R/resp.rds")
+resp_df <- resp_dataset(hr, resp)
+set.seed(2023)
+resid_plot <- with(resp_df, tibble(
+  f = jitter(breath_ecg),
+  r = jitter(breath_chest - breath_ecg),
+  s = predict(smooth.spline(f, r), f)$y
+)) |>
+  ggplot(aes(f, r)) +
+  geom_point(shape = 1) +
+  geom_smooth(method = "gam", formula = y ~ s(x), col = 2) +
+  labs(x = "Fitted values", y = "Residuals") +
+  theme_bw()
+reg_plot <- attributes(resp_df)$reg_plot
+wrap_plots(resid_plot, reg_plot, widths = c(1, 1.2))
+
 ## ---- data
 training_set <- c("a01", "a02", "a03", "a04", "b01")
 test_set <- c("c01", "c02", "c03")
@@ -72,6 +90,9 @@ write_rds(resp_test, "../R/resp-test.rds")
 hr <- read_rds("../R/hr.rds")
 resp <- read_rds("../R/resp.rds")
 resp_df <- resp_dataset(hr, resp)
+
+## ---- result
+attributes(resp_df)$opt_lambda
 resp_df
 summary(resp_df)
 

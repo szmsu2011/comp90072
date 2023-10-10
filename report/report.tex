@@ -345,7 +345,7 @@ algorithm}\label{the-smoothing-spline-crossing-algorithm}}
 
 }
 
-\caption{Time series of chest movement (top) and heart rates (bottom) at 1Hz for 1 minute. Blue: naive zero-crossing; red: smoothing spline crossing. We can clearly see that smoothing spline gives a better count.}\label{fig:sszc}
+\caption{Time series of chest movement (top) and heart rates (bottom) at 1Hz for 1 minute. Blue: naive zero-crossing gives a count of 11.5 and 6 breaths; red: smoothing spline crossing gives a count of 19.5 and 16.5 breaths. We can clearly see that smoothing spline performs much better in counting breaths.}\label{fig:sszc}
 \end{figure}
 
 \hypertarget{model-training}{%
@@ -379,6 +379,8 @@ algorithm}\label{the-smoothing-spline-crossing-algorithm}}
 
 \hypertarget{model-diagnostics}{%
 \subsection{Model diagnostics}\label{model-diagnostics}}
+
+\begin{center}\includegraphics{report_files/figure-latex/resid-check-1} \end{center}
 
 \hypertarget{model-evaluation}{%
 \subsection{Model evaluation}\label{model-evaluation}}
@@ -450,12 +452,16 @@ processing}\label{data-wrangling-and-signal-processing}}
 \end{Highlighting}
 \end{Shaded}
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{attributes}\NormalTok{(resp\_df)}\SpecialCharTok{$}\NormalTok{opt\_lambda}
+\end{Highlighting}
+\end{Shaded}
+
 \begin{verbatim}
 #>   opt_lambda 
 #> 1.571851e-06
 \end{verbatim}
-
-\begin{center}\includegraphics{report_files/figure-latex/train-1} \end{center}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -466,7 +472,7 @@ processing}\label{data-wrangling-and-signal-processing}}
 \begin{verbatim}
 #> # A tibble: 2,526 x 2
 #>    breath_chest breath_ecg
-#>           <dbl>      <dbl>
+#>  *        <dbl>      <dbl>
 #>  1         19.5       15  
 #>  2         22.5       16  
 #>  3         23.5       17.5

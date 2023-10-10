@@ -38,22 +38,26 @@ resp_dataset <- function(ecg_hr, resp_ts, opt_lambda = NULL) {
       })
       mean((chest_bpm - hr_bpm)^2)
     })
-    opt_lambda <- print(c(opt_lambda = lambda[which.min(mse)]))
-    print(tibble(lambda = log(lambda), mse = mse) |>
+    opt_lambda <- c(opt_lambda = lambda[which.min(mse)])
+    reg_plot <- tibble(lambda = log(lambda), mse = mse) |>
       ggplot(aes(lambda, mse)) +
       geom_line() +
       geom_vline(xintercept = log(opt_lambda), col = 2) +
       theme_bw() +
       labs(
-        title = "Regularisation result",
-        x = expression(log(lambda)),
+        x = expression("low bias, high var" %<-% log(lambda) %->%
+          "high bias, low var    "),
         y = expression(L[2] * " loss")
-      ))
+      )
   }
   hr_bpm <- map_dbl(seq_len(n_min) * 60, function(t) {
     bpm(ecg_hr[seq(t - 59, t)], lambda = opt_lambda)
   })
   resp_df <- tibble(breath_chest = chest_bpm, breath_ecg = hr_bpm)
+  if (exists("reg_plot")) {
+    attributes(resp_df)$reg_plot <- reg_plot
+  }
+  attributes(resp_df)$opt_lambda <- opt_lambda
   return(resp_df)
 }
 
