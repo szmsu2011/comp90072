@@ -377,19 +377,101 @@ algorithm}\label{the-smoothing-spline-crossing-algorithm}}
 \end{algorithmic}
 \end{algorithm}
 
+\newpage
+
 \hypertarget{model-diagnostics}{%
 \subsection{Model diagnostics}\label{model-diagnostics}}
 
-\begin{center}\includegraphics{report_files/figure-latex/resid-check-1} \end{center}
+The trained model implied that one's heart rate is useful for inferring
+the rate of breath, and the results are statistically significant based
+on the regularisation result. If there is null relationship between the
+heart rate and rate of breath, the trained model should have returned a
+\emph{least-complex fit}, such the \(L_2\) loss function
+(cross-validated MSE) is minimised at large \(\lambda\) and is
+monotonically decreasing. Hence, the obvious inverted bell curve
+exhibited by the regularised \(L_2\) loss with one minimum gives
+evidence against a \emph{null-model fit}.
+
+\begin{figure}
+
+{\centering \includegraphics{report_files/figure-latex/resid-check-1} 
+
+}
+
+\caption{Left: the existence of residual trend, indicates a nonzero bias; right: visual representation of the bias-variance tradeoff via regularisation, the result indicates that the model is more useful than null model.}\label{fig:resid-check}
+\end{figure}
+
+Notwithstanding the model being shown useful for predicting the rate of
+breath using the heart rate, it gives biased estimates for predictions.
+For all \emph{best linear unbiased estimators} (BLUE), such as
+\emph{least square estimators}, residuals:
+\(\mathbf{r} - \mathbf{\hat{r}}\), are orthogonal (therefore,
+independent) to the fitted values: \(\mathbf{\hat{r}}\). But, the final
+model gives
+\(\hat{\text{Corr}}(\mathbf{\hat{r}}, \mathbf{r} - \mathbf{\hat{r}}) = -0.3976376\)
+implying
+\(\text{Bias}(\mathbf{\hat{r}}) = \mathbb{E}(\mathbf{\hat{r}}) - \mathbf{r} \neq \mathbf{0}\).
+Such bias is introduced intentionally due to regularisation to reduce
+variance of the estimator \(\mathbf{\hat{r}}\). More comparatively:
+
+\begin{align*}
+  &\text{BLUE minimises Var} (\mathbf{\hat{r}}) \text{ subject to Bias} (\mathbf{\hat{r}}) = \mathbf{0} \\
+  &\text{Regularised estimator minimises MSE} (\mathbf{\hat{r}}) = \mathbb{E}((\mathbf{r} - \mathbf{\hat{r}})^2) = \text{Var}(\mathbf{\hat{r}}) + \text{Bias}(\mathbf{\hat{r}})^2
+\end{align*}
+
+While BLUE has constraints
+\(\text{Bias}(\mathbf{\hat{r}}) = \mathbf{0}\) (always aims for
+maximising accuracy first), it unwantedly inflates the variance of the
+estimator. Whereas regularised estimator appeals to the
+\emph{bias-variance tradeoff} seeks to directly minimise the
+cross-validated prediction error (as a function of \(L_2\) loss), that
+is decomposable to the sum of variance (imprecision) and bias-squared
+(inaccuracy) for any estimator (Hastie et al., 2009). It follows that,
+we relaxed the requirement of zero bias via introducing a small bias
+(sacrificed some accuracy) for a substantially larger drop in variance
+(massively improved precision) to achieve better predictive performance.
+
+Despite prior anticipation of the bias being nonzero, it is of interest
+to test for its statistical and practical significance and see if it is
+acceptably low. For heart-rate-derived breath rate:
+\(\mathbf{\hat{r}}\), as an estimator for breath rate based on chest
+movements: \(\mathbf{r}\), we can draw a hypothesis test for
+\(\mathbf{r} = \beta\mathbf{\hat{r}}\), and due to the linear nature in
+projecting the estimator (see Algorithm 4), we have the null and
+alternative hypotheses:
+
+\begin{align*}
+  &H_0: \text{The estimator } \mathbf{\hat{r}} \text{ is unbiased} \iff \beta = 1 \\
+  &H_1: \text{The estimator } \mathbf{\hat{r}} \text{ is biased} \iff \beta \neq 1
+\end{align*}
+
+Therefore, under \(H_0:\)
+
+\begin{align*}
+  \frac{1}{\sigma^2}(1 - \hat{\beta})^\top\mathbf{\hat{r}}^\top\mathbf{\hat{r}}(1 - \hat{\beta}) = \sigma^{-2}\mathbf{\hat{r}}^\top\mathbf{\hat{r}}(1 - \hat{\beta})^2 \sim \chi_1^2 \text{ where } \hat{\beta} = (\mathbf{\hat{r}}^\top\mathbf{\hat{r}})^{-1}\mathbf{\hat{r}}^\top\mathbf{r}
+\end{align*}
+
+Which gives the Wald's statistic (Wald, 1943):
+
+\begin{align*}
+  W = (n - 1) ||(\mathbf{1} - \mathbf{\hat{r}}(\mathbf{\hat{r}}^\top\mathbf{\hat{r}})^{-1}\mathbf{\hat{r}}^\top)\mathbf{r}||^{-2}(\mathbf{\hat{r}}^\top\mathbf{\hat{r}} - \mathbf{\hat{r}}^\top\mathbf{r})^2
+\end{align*}
+
+Applied to the results of our final model, we have the Wald's
+\(p\)-value \(\mathbb{P}(\chi_1^2 > W) = 2.983174 \times 10^{-13}\),
+which provides a very strong evidence for the estimator
+\(\mathbf{\hat{r}}\) being biased. However, a further assessment on the
+95\% asymptotic confidence interval of \(\beta\), (0.9521173,
+0.9724053), indicates the bias is acceptable.
 
 \hypertarget{model-evaluation}{%
-\subsection{Model evaluation}\label{model-evaluation}}
+\section{Model evaluation}\label{model-evaluation}}
 
 \newpage
 
-\hypertarget{appendix-workflow-code-and-output}{%
-\section{Appendix: workflow, code and
-output}\label{appendix-workflow-code-and-output}}
+\hypertarget{appendix-model-training-workflow-code-and-output}{%
+\section{Appendix: model training workflow, code and
+output}\label{appendix-model-training-workflow-code-and-output}}
 
 \hypertarget{source-code}{%
 \subsection{Source code}\label{source-code}}
@@ -574,6 +656,12 @@ P. C., Mark, R. G., Mietus, J. E., Moody, G. B., Peng, C.-K., \&
 Stanley, H. E. (2000). Physiobank, physiotoolkit, and physionet.
 \emph{Circulation}, \emph{101}(23), e215--e220.
 
+\leavevmode\vadjust pre{\hypertarget{ref-Hastie2009}{}}%
+Hastie, T., Tibshirani, R., \& Friedman, J. H. (2009). \emph{The
+elements of statistical learning: Data mining, inference, and
+prediction} (2nd ed., pp. 37--38). Springer New York.
+\url{https://hastie.su.domains/Papers/ESLII.pdf}
+
 \leavevmode\vadjust pre{\hypertarget{ref-Larsen2010}{}}%
 Larsen, P. D., Tzeng, Y. C., Sin, P. Y. W., \& Galletly, D. C. (2010).
 Respiratory sinus arrhythmia in conscious humans during spontaneous
@@ -590,6 +678,12 @@ H. (2000). The apnea-ecg database. \emph{Computers in Cardiology 2000},
 Shamo'on, H., Hawamdah, A., Haddadin, R., \& Jmeian, S. (2004).
 Detection of pneumonia among children under six years by clinical
 evaluation. \emph{East Mediterr Health J}, \emph{10}(4-5), 482--487.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Wald1943}{}}%
+Wald, A. (1943). Tests of statistical hypotheses concerning several
+parameters when the number of observations is large. \emph{Transactions
+of the American Mathematical Society}, \emph{54}, 426--482.
+\url{https://doi.org/10.1090/S0002-9947-1943-0012401-3}
 
 \leavevmode\vadjust pre{\hypertarget{ref-WHO2022}{}}%
 World Health Organisation. (2022). \emph{Pneumonia in children}.
