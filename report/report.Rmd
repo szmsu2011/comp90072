@@ -216,8 +216,8 @@ The trained model implied that one's heart rate is useful for inferring the rate
 Notwithstanding the model being shown useful for predicting the rate of breath using the heart rate, it gives biased estimates for predictions. For all *best linear unbiased estimators* (BLUE), such as *least square estimators*, residuals: $\mathbf{r} - \mathbf{\hat{r}}$, are orthogonal (therefore, independent) to the fitted values: $\mathbf{\hat{r}}$. But, the final model gives $\hat{\text{Corr}}(\mathbf{\hat{r}}, \mathbf{r} - \mathbf{\hat{r}}) = -0.3976376$ implying $\text{Bias}(\mathbf{\hat{r}}) = \mathbb{E}(\mathbf{\hat{r}}) - \mathbf{r} \neq \mathbf{0}$. Such bias is introduced intentionally due to regularisation to reduce variance of the estimator $\mathbf{\hat{r}}$. More comparatively:
 
 \begin{align*}
-  &\text{BLUE minimises Var} (\mathbf{\hat{r}}) \text{ subject to Bias} (\mathbf{\hat{r}}) = \mathbf{0} \\
-  &\text{Regularised estimator minimises MSE} (\mathbf{\hat{r}}) = \mathbb{E}((\mathbf{r} - \mathbf{\hat{r}})^2) = \text{Var}(\mathbf{\hat{r}}) + \text{Bias}(\mathbf{\hat{r}})^2
+  \text{BLUE }&\text{minimises Var} (\mathbf{\hat{r}}) \text{ subject to Bias} (\mathbf{\hat{r}}) = \mathbf{0} \\
+  \text{Regularised estimator }&\text{minimises MSE} (\mathbf{\hat{r}}) = \mathbb{E}((\mathbf{r} - \mathbf{\hat{r}})^2) = \text{Var}(\mathbf{\hat{r}}) + \text{Bias}(\mathbf{\hat{r}})^2
 \end{align*}
 
 While BLUE has constraints $\text{Bias}(\mathbf{\hat{r}}) = \mathbf{0}$ (always aims for maximising accuracy first), it unwantedly inflates the variance of the estimator. Whereas regularised estimator appeals to the *bias-variance tradeoff* seeks to directly minimise the cross-validated prediction error (as a function of $L_2$ loss), that is decomposable to the sum of variance (imprecision) and bias-squared (inaccuracy) for any estimator [@Hastie2009]. It follows that, we relaxed the requirement of zero bias via introducing a small bias (sacrificed some accuracy) for a substantially larger drop in variance (massively improved precision) to achieve better predictive performance.
@@ -243,7 +243,17 @@ Which gives the Wald's statistic [@Wald1943]:
 
 Applied to the results of our final model, we have the Wald's $p$-value $\mathbb{P}(\chi_1^2 > W) = 2.983174 \times 10^{-13}$, which provides a very strong evidence for the estimator $\mathbf{\hat{r}}$ being biased. However, a further assessment on the 95% asymptotic confidence interval of $\beta$, (0.9521173, 0.9724053), indicates the bias is acceptable.
 
-# Model evaluation
+\newpage
+
+# Conclusion and further research
+
+## Model evaluation
+
+## Extending the model
+
+### Bayesian approach and random effects models
+
+### Deep learning and deep double descent
 
 \newpage
 
