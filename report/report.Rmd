@@ -208,7 +208,7 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 
 ## Model diagnostics
 
-The trained model implied that one's heart rate is useful for inferring the rate of breath, and the results are statistically significant based on the regularisation result. If there is null relationship between the heart rate and rate of breath, the trained model should have returned a *least-complex fit*, such the $L_2$ loss function (cross-validated MSE) is minimised at large $\lambda$ and is monotonically decreasing. Hence, the obvious inverted bell curve exhibited by the regularised $L_2$ loss with one minimum gives evidence against a *null-model fit*.
+The trained model implied that one's heart rate is useful for inferring the rate of breath, and the results are statistically significant based on the regularisation result. If there is null relationship between the heart rate and rate of breath, the trained model should have returned a *least-complex fit* such that $L_2$ loss function (cross-validated MSE) is minimised at large $\lambda$ and is monotonically decreasing. Hence, the obvious inverted bell curve exhibited by the regularised $L_2$ loss with one minimum gives evidence against a *null-model fit*.
 
 ```{r resid-check, fig.height = 3.2, fig.cap = "Left: the existence of residual trend, indicates a nonzero bias; right: visual representation of the bias-variance tradeoff via regularisation, the result indicates that the model is more useful than null model."}
 ```
