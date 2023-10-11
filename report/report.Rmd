@@ -280,7 +280,7 @@ A Bayesian extension to our model into a *random effects model* is able to free 
 
 Deep learning with *artificial neural networks* gives another direction for further researches. The advantage of deep learning over *classical* statistics is that it pushes the model beyond *bias-variance tradeoff*. While for *classical* methods the effective number of parameters cannot exceed the training sample size, the model complexity of neural network is not restricted by its training sample. Notwithstanding for both deep learning and *classical* methods, the predictive power suffers whenever the effective parameter size grows toward the training sample size, the over-parameterisation in neural networks allows for a second descent in the loss curve (also referred to as risk curve), in a phenomenon called the *double descent* [@Belkin2019]. Such effect of *double descent* has only recently been shown by research in *convolutional neural network*, *residual neural network* and *transformers* [@Nakkiran2019].
 
-```{r ddd, out.width = "100%", fig.cap = "Visualisation in (Nakkiran et al., 2019): (a) Bias-variance tradeoff in classical methods. (b) Double descent loss curve from modern interpolating regime, potentially giving better predictions."}
+```{r ddd, out.width = "100%", fig.cap = "Visualisation in (Belkin et al., 2019): (a) Bias-variance tradeoff in classical methods. (b) Double descent loss curve from modern interpolating regime, potentially giving better predictions."}
 knitr::include_graphics("figure/ddd.png")
 ```
 
