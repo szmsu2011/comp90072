@@ -110,4 +110,6 @@ confint(test)
 hr_test <- read_rds("../R/hr-test.rds")
 resp_test <- read_rds("../R/resp-test.rds")
 resp_dt <- resp_dataset(hr_test, resp_test, 1.571851e-06)
-c("RMSEP" = with(resp_dt, sqrt(mean((breath_chest - breath_ecg)^2))))
+c(RMSEP = with(resp_dt, sqrt(mean((breath_chest - breath_ecg)^2))))
+c("RMSEP percentage" = with(resp_dt, sqrt(mean((1 -
+  breath_ecg / breath_chest)^2))) * 100)

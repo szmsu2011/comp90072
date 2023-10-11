@@ -654,13 +654,25 @@ processing}\label{data-wrangling-and-signal-processing}}
 \NormalTok{hr\_test }\OtherTok{\textless{}{-}} \FunctionTok{read\_rds}\NormalTok{(}\StringTok{"../R/hr{-}test.rds"}\NormalTok{)}
 \NormalTok{resp\_test }\OtherTok{\textless{}{-}} \FunctionTok{read\_rds}\NormalTok{(}\StringTok{"../R/resp{-}test.rds"}\NormalTok{)}
 \NormalTok{resp\_dt }\OtherTok{\textless{}{-}} \FunctionTok{resp\_dataset}\NormalTok{(hr\_test, resp\_test, }\FloatTok{1.571851e{-}06}\NormalTok{)}
-\FunctionTok{c}\NormalTok{(}\StringTok{"RMSEP"} \OtherTok{=} \FunctionTok{with}\NormalTok{(resp\_dt, }\FunctionTok{sqrt}\NormalTok{(}\FunctionTok{mean}\NormalTok{((breath\_chest }\SpecialCharTok{{-}}\NormalTok{ breath\_ecg)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{))))}
+\FunctionTok{c}\NormalTok{(}\AttributeTok{RMSEP =} \FunctionTok{with}\NormalTok{(resp\_dt, }\FunctionTok{sqrt}\NormalTok{(}\FunctionTok{mean}\NormalTok{((breath\_chest }\SpecialCharTok{{-}}\NormalTok{ breath\_ecg)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{))))}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 #>    RMSEP 
 #> 5.489861
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{c}\NormalTok{(}\StringTok{"RMSEP percentage"} \OtherTok{=} \FunctionTok{with}\NormalTok{(resp\_dt, }\FunctionTok{sqrt}\NormalTok{(}\FunctionTok{mean}\NormalTok{((}\DecValTok{1} \SpecialCharTok{{-}}
+\NormalTok{  breath\_ecg }\SpecialCharTok{/}\NormalTok{ breath\_chest)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{))) }\SpecialCharTok{*} \DecValTok{100}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+#> RMSEP percentage 
+#>         33.94976
 \end{verbatim}
 
 \newpage
