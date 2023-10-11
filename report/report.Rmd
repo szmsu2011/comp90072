@@ -1,5 +1,5 @@
 ---
-title: "Respiratory Rate Determination by ECG Monitoring"
+title: "Respiratory Rate Determination by ECG Signals - Incomplete"
 author: "Stephen Su, 844503, COMP90072"
 output:
   pdf_document:
@@ -25,8 +25,7 @@ body {
 </style>
 
 ```{r setup, include = FALSE}
-library(knitr)
-opts_chunk$set(
+knitr::opts_chunk$set(
   message = FALSE, warning = FALSE, echo = FALSE, dpi = 500,
   fig.height = 4, fig.align = "center", comment = "#>",
   dev.args = list(png = list(type = "cairo"))
@@ -43,7 +42,7 @@ map(r_source[str_detect(r_source, "\\.R$")], source)
 ```
 
 ```{r code, include = FALSE, cache = FALSE}
-read_chunk("report.R")
+knitr::read_chunk("report.R")
 ```
 
 # Introduction
@@ -281,11 +280,13 @@ A Bayesian extension to our model into a *random effects model* is able to free 
 
 Deep learning with *artificial neural networks* gives another direction for further researches. The advantage of deep learning over *classical* statistics is that it pushes the model beyond *bias-variance tradeoff*. While for *classical* methods the effective number of parameters cannot exceed the training sample size, the model complexity of neural network is not restricted by its training sample. Notwithstanding for both deep learning and *classical* methods, the predictive power suffers whenever the effective parameter size grows toward the training sample size, the over-parameterisation in neural networks allows for a second descent in the loss curve (also referred to as risk curve), in a phenomenon called the *double descent* [@Belkin2019]. Such effect of *double descent* has only recently been shown by research in *convolutional neural network*, *residual neural network* and *transformers* [@Nakkiran2019].
 
-\newpage
-
 ```{r ddd, out.width = "100%", fig.cap = "Visualisation in (Nakkiran et al., 2019): (a) Bias-variance tradeoff in classical methods. (b) Double descent loss curve from modern interpolating regime, potentially giving better predictions."}
-include_graphics("figure/ddd.png")
+knitr::include_graphics("figure/ddd.png")
 ```
+
+## Open and reproducible research
+
+The source files and data for reproducing the report, the output of the project and history of all edits are available at the GitHub repository [szmsu2011/comp90072](https://github.com/szmsu2011/comp90072).
 
 \newpage
 
