@@ -232,13 +232,17 @@ Despite prior anticipation of the bias being nonzero, it is of interest to test 
 Therefore, under $H_0:$
 
 \begin{align*}
-  \frac{1}{\sigma^2}(1 - \hat{\beta})^\top\mathbf{\hat{r}}^\top\mathbf{\hat{r}}(1 - \hat{\beta}) = \sigma^{-2}\mathbf{\hat{r}}^\top\mathbf{\hat{r}}(1 - \hat{\beta})^2 \sim \chi_1^2 \text{ where } \hat{\beta} = (\mathbf{\hat{r}}^\top\mathbf{\hat{r}})^{-1}\mathbf{\hat{r}}^\top\mathbf{r}
+  \frac{1}{\sigma^2}(1 - \hat{\beta})^\top\mathbf{\hat{r}}^\top\mathbf{\hat{r}}(1 - \hat{\beta}) &= \sigma^{-2}\mathbf{\hat{r}}^\top\mathbf{\hat{r}}(1 - \hat{\beta})^2 \\
+  &\sim \chi_1^2 \\
+  \text{where } \hat{\beta} &= (\mathbf{\hat{r}}^\top\mathbf{\hat{r}})^{-1}\mathbf{\hat{r}}^\top\mathbf{r}
 \end{align*}
 
 Which gives the Wald's statistic [@Wald1943]:
 
 \begin{align*}
-  W = (n - 1) ||(\mathbf{1} - \mathbf{\hat{r}}(\mathbf{\hat{r}}^\top\mathbf{\hat{r}})^{-1}\mathbf{\hat{r}}^\top)\mathbf{r}||^{-2}(\mathbf{\hat{r}}^\top\mathbf{\hat{r}} - \mathbf{\hat{r}}^\top\mathbf{r})^2
+  W &= \hat{\sigma}^{-2}\mathbf{\hat{r}}^\top\mathbf{\hat{r}}(1 - \hat{\beta})^2 \\
+  &= (\text{dim}(\mathbf{r}) - 1) ||(\mathbf{1} - \mathbf{\hat{r}}(\mathbf{\hat{r}}^\top\mathbf{\hat{r}})^{-1}\mathbf{\hat{r}}^\top)\mathbf{r}||^{-2}\mathbf{\hat{r}}^\top\mathbf{\hat{r}}(1 - (\mathbf{\hat{r}}^\top\mathbf{\hat{r}})^{-1}\mathbf{\hat{r}}^\top\mathbf{r})^2 \\
+  &= (\text{dim}(\mathbf{r}) - 1) ||(\mathbf{1} - \mathbf{\hat{r}}(\mathbf{\hat{r}}^\top\mathbf{\hat{r}})^{-1}\mathbf{\hat{r}}^\top)\mathbf{r}||^{-2}(\mathbf{\hat{r}}^\top\mathbf{\hat{r}} - \mathbf{\hat{r}}^\top\mathbf{r})^2
 \end{align*}
 
 Applied to the results of our final model, we have the Wald's $p$-value $\mathbb{P}(\chi_1^2 > W) = 2.983174 \times 10^{-13}$, which provides a very strong evidence for the estimator $\mathbf{\hat{r}}$ being biased. However, a further assessment on the 95% asymptotic confidence interval of $\beta$, (0.9521173, 0.9724053), indicates the bias is acceptable.

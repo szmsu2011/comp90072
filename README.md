@@ -18,15 +18,15 @@ install.packages("xaringanthemer")
 install.packages("tidyverse")
 install.packages("zoo")
 install.packages("patchwork")
-install.packages("reticulate")
+install.packages("tinytex")
+tinytex::install_tinytex()
 ```
 
 ## Reproducible research
 
-The deliverables of the project consist of a PDF report and an HTML
-slide rendered by RMarkdown.
+The deliverables of the project consist of a PDF report rendered by
+RMarkdown.
 
 ``` r
 rmarkdown::render("report/report.Rmd")
-# rmarkdown::render("slide/slide.Rmd")
 ```
