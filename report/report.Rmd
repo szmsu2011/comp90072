@@ -253,11 +253,31 @@ Applied to the results of our final model, we have the Wald's $p$-value $\mathbb
 
 ## Model evaluation
 
+Despite we have justified the *goodness of fit* for the model, that the heart rate is useful for predicting respiratory rate, model diagnostics based on the training results might give an optimistic estimate for the prediction error. Hence, to neutrally assess the predictive performance of the model, its predictive power shall be tested in a separate *test* data set (c01-03), via *root mean squared error of prediction* (RMSEP).
+
+When estimated optimal value of the regularisation parameter $\lambda = 1.571851 \times 10^{-6}$ is used in the model and applied to the *test* data set, the RMSEP is approximately 5.49 breaths per minute (or 33.95% off the observed respiratory rate). Unfortunately but not surprisingly, it is difficult to, using cardio-activities alone, both *precisely* and *accurately* predict the respiratory rate using *classical* statistical methods. Nonetheless, the findings in this project delivered compelling evidence for the feasibility of respiratory rate prediction using heart rate as one of the predictors, and a direction for implementation.
+
+A lack of information from the *training* data set is a major reason of the under-satisfactory predictive performance of the model. Despite the records are eight hours long at 100Hz each with approximately 3 million data points, the sufficiency in sample size is only useful for building a model robust to abnormal signal. However, merely five individuals are unlikely able to give an adequate generalisation for the population. As such, preferably, the model should be trained using random sample of at least hundreds (even thousands) of individuals, from target populations (children under 5), as a guidance for further researches in this topic.
+
 ## Extending the model
+
+Another major factor responsible for the low predictive power is due to the limitations of the *classical* statistical regime. In the following sections, two possible extensions to the model are briefly discussed.
 
 ### Bayesian approach and random effects models
 
-### Deep learning and deep double descent
+The model outlined in this report naively assumed *fixed effects*, such that there exists a single true transformation to map the predictors to fitted values. Contextually, we were claiming that, the relationship of heart rate and respiratory rate is the same for all individuals, and it is unaffected by other factors.
+
+A Bayesian extension to our model into a *random effects model* is able to free us from the assumption of *fixed effects*, which helps us model for additional physiological factors such as weight. It is worth noting that Bayesian statistical learning involves posterior computation, that often relies on stochastic simulation such as Markov chain Monte Carlo, which is much more time-consuming to train than the current model.
+
+### Deep learning and double descent
+
+Deep learning with *artificial neural networks* gives another direction for further researches. The advantage of deep learning over *classical* statistics is that it pushes the model beyond *bias-variance tradeoff*. While for *classical* methods the effective number of parameters cannot exceed the training sample size, the model complexity of neural network is not restricted by its training sample. Notwithstanding for both deep learning and *classical* methods, the predictive power suffers whenever the effective parameter size grows toward the training sample size, the over-parameterisation in neural networks allows for a second descent in the loss curve (also referred to as risk curve), in a phenomenon called the *double descent* [@Belkin2019]. Such effect of *double descent* has only recently been shown by research in *convolutional neural network*, *residual neural network* and *transformers* [@Nakkiran2019].
+
+\newpage
+
+```{r ddd, out.width = "100%", fig.cap = "Visualisation in (Nakkiran et al., 2019): (a) Bias-variance tradeoff in classical methods. (b) Double descent loss curve from modern interpolating regime, potentially giving better predictions."}
+include_graphics("figure/ddd.png")
+```
 
 \newpage
 

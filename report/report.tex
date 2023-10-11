@@ -477,16 +477,92 @@ research}\label{conclusion-and-further-research}}
 \hypertarget{model-evaluation}{%
 \subsection{Model evaluation}\label{model-evaluation}}
 
+Despite we have justified the \emph{goodness of fit} for the model, that
+the heart rate is useful for predicting respiratory rate, model
+diagnostics based on the training results might give an optimistic
+estimate for the prediction error. Hence, to neutrally assess the
+predictive performance of the model, its predictive power shall be
+tested in a separate \emph{test} data set (c01-03), via \emph{root mean
+squared error of prediction} (RMSEP).
+
+When estimated optimal value of the regularisation parameter
+\(\lambda = 1.571851 \times 10^{-6}\) is used in the model and applied
+to the \emph{test} data set, the RMSEP is approximately 5.49 breaths per
+minute (or 33.95\% off the observed respiratory rate). Unfortunately but
+not surprisingly, it is difficult to, using cardio-activities alone,
+both \emph{precisely} and \emph{accurately} predict the respiratory rate
+using \emph{classical} statistical methods. Nonetheless, the findings in
+this project delivered compelling evidence for the feasibility of
+respiratory rate prediction using heart rate as one of the predictors,
+and a direction for implementation.
+
+A lack of information from the \emph{training} data set is a major
+reason of the under-satisfactory predictive performance of the model.
+Despite the records are eight hours long at 100Hz each with
+approximately 3 million data points, the sufficiency in sample size is
+only useful for building a model robust to abnormal signal. However,
+merely five individuals are unlikely able to give an adequate
+generalisation for the population. As such, preferably, the model should
+be trained using random sample of at least hundreds (even thousands) of
+individuals, from target populations (children under 5), as a guidance
+for further researches in this topic.
+
 \hypertarget{extending-the-model}{%
 \subsection{Extending the model}\label{extending-the-model}}
+
+Another major factor responsible for the low predictive power is due to
+the limitations of the \emph{classical} statistical regime. In the
+following sections, two possible extensions to the model are briefly
+discussed.
 
 \hypertarget{bayesian-approach-and-random-effects-models}{%
 \subsubsection{Bayesian approach and random effects
 models}\label{bayesian-approach-and-random-effects-models}}
 
-\hypertarget{deep-learning-and-deep-double-descent}{%
-\subsubsection{Deep learning and deep double
-descent}\label{deep-learning-and-deep-double-descent}}
+The model outlined in this report naively assumed \emph{fixed effects},
+such that there exists a single true transformation to map the
+predictors to fitted values. Contextually, we were claiming that, the
+relationship of heart rate and respiratory rate is the same for all
+individuals, and it is unaffected by other factors.
+
+A Bayesian extension to our model into a \emph{random effects model} is
+able to free us from the assumption of \emph{fixed effects}, which helps
+us model for additional physiological factors such as weight. It is
+worth noting that Bayesian statistical learning involves posterior
+computation, that often relies on stochastic simulation such as Markov
+chain Monte Carlo, which is much more time-consuming to train than the
+current model.
+
+\hypertarget{deep-learning-and-double-descent}{%
+\subsubsection{Deep learning and double
+descent}\label{deep-learning-and-double-descent}}
+
+Deep learning with \emph{artificial neural networks} gives another
+direction for further researches. The advantage of deep learning over
+\emph{classical} statistics is that it pushes the model beyond
+\emph{bias-variance tradeoff}. While for \emph{classical} methods the
+effective number of parameters cannot exceed the training sample size,
+the model complexity of neural network is not restricted by its training
+sample. Notwithstanding for both deep learning and \emph{classical}
+methods, the predictive power suffers whenever the effective parameter
+size grows toward the training sample size, the over-parameterisation in
+neural networks allows for a second descent in the loss curve (also
+referred to as risk curve), in a phenomenon called the \emph{double
+descent} (Belkin et al., 2019). Such effect of \emph{double descent} has
+only recently been shown by research in \emph{convolutional neural
+network}, \emph{residual neural network} and \emph{transformers}
+(Nakkiran et al., 2019).
+
+\newpage
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{figure/ddd} 
+
+}
+
+\caption{Visualisation in (Nakkiran et al., 2019): (a) Bias-variance tradeoff in classical methods. (b) Double descent loss curve from modern interpolating regime, potentially giving better predictions.}\label{fig:ddd}
+\end{figure}
 
 \newpage
 
@@ -683,6 +759,13 @@ processing}\label{data-wrangling-and-signal-processing}}
 
 \hypertarget{refs}{}
 \begin{CSLReferences}{1}{1}
+\leavevmode\vadjust pre{\hypertarget{ref-Belkin2019}{}}%
+Belkin, M., Hsu, D., Ma, S., \& Mandal, S. (2019). Reconciling modern
+machine-learning practice and the classical bias{\textendash}variance
+trade-off. \emph{Proceedings of the National Academy of Sciences},
+\emph{116}(32), 15849--15854.
+\url{https://doi.org/10.1073/pnas.1903070116}
+
 \leavevmode\vadjust pre{\hypertarget{ref-goldberger2000}{}}%
 Goldberger, A. L., Amaral, L. A., Glass, L., Hausdorff, J. M., Ivanov,
 P. C., Mark, R. G., Mietus, J. E., Moody, G. B., Peng, C.-K., \&
@@ -701,6 +784,11 @@ Respiratory sinus arrhythmia in conscious humans during spontaneous
 respiration. \emph{Respiratory Physiology \& Neurobiology},
 \emph{174}(1--2), 111--118.
 \url{https://doi.org/10.1016/j.resp.2010.04.021}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Nakkiran2019}{}}%
+Nakkiran, P., Kaplun, G., Bansal, Y., Yang, T., Barak, B., \& Sutskever,
+I. (2019). \emph{Deep double descent: Where bigger models and more data
+hurt}. \url{https://arxiv.org/abs/1912.02292}
 
 \leavevmode\vadjust pre{\hypertarget{ref-penzel2000}{}}%
 Penzel, T., Moody, G. B., Mark, R. G., Goldberger, A. L., \& Peter, J.
