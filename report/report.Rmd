@@ -100,6 +100,8 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 \end{algorithmic}
 \end{algorithm}
 
+(Incomplete)
+
 \begin{algorithm}
 \caption{R peak timestamping with phase correction}
 \begin{algorithmic}[1]
@@ -132,6 +134,8 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 
 ### Heart rate derivation from ECG signals
 
+(Incomplete)
+
 \begin{algorithm}
 \caption{Deriving instantaneous heart rates from R peak timestamps}
 \begin{algorithmic}[1]
@@ -157,6 +161,8 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 
 ### The smoothing spline crossing algorithm
 
+(Incomplete)
+
 \begin{algorithm}
 \caption{Smoothing spline crossing for counting cycles of nonstationary pseudosinusoidal oscillations, for varying heart rates/chest movements}
 \begin{algorithmic}[1]
@@ -177,6 +183,8 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 ```
 
 ### Model training
+
+(Incomplete)
 
 \begin{algorithm}
 \caption{Deriving breath rate from heart rate based on chest movements}
