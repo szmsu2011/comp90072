@@ -240,10 +240,10 @@ creating a challenge in computing heart rate from the ECG signal.
 \end{figure}
 
 \begin{algorithm}
-\caption{5-20Hz band-pass filter with fast Fourier transform}
+\caption{5-20Hz band-pass filter with discrete Fourier transform}
 \begin{algorithmic}[1]
 \STATE Take $\mathbf{x} \in \mathbb{R}^n$ as the 100-Hz input
-\STATE Obtain $\mathbf{y}$ by fast Fourier transform on $\mathbf{x}$
+\STATE Obtain $\mathbf{y}$ by discrete Fourier transform on $\mathbf{x}$
 \FOR{$t = 1, ..., n$}
 \STATE $y_t \leftarrow \sum_{k = 1}^n{x_k}\text{exp}(-2\pi i(k - 1)(t - 1) / n)$
 \ENDFOR
@@ -251,7 +251,7 @@ creating a challenge in computing heart rate from the ECG signal.
 \FOR{$t = 1, ..., n \land (t \in (0.2n, 0.8n) \lor t > 0.95n \lor t < 0.05n)$}
 \STATE $y_t \leftarrow 0 + 0i$
 \ENDFOR
-\STATE Obtain $\mathbf{z}$ by normalised inverse fast Fourier transform on $\mathbf{y}$
+\STATE Obtain $\mathbf{z}$ by normalised inverse discrete Fourier transform on $\mathbf{y}$
 \FOR{$t = 1, ..., n$}
 \STATE $z_t \leftarrow \sum_{k = 1}^n{y_k}\text{exp}(2\pi i(k - 1)(t - 1) / n) / n$
 \ENDFOR
@@ -283,7 +283,7 @@ creating a challenge in computing heart rate from the ECG signal.
 \ENDFOR
 \STATE Preliminary timestamps for R peak $\mathbf{p} \leftarrow (t = 1, ..., n | \iota^{(1)}_t \land \iota^{(2)}_t \text{ is True})$
 \STATE Remove abnormal timestamps in $\mathbf{p}$ with R-R intervals of < 300ms
-\STATE Correct phase-shifts caused by fast Fourier transform
+\STATE Correct phase-shifts caused by discrete Fourier transform
 \FOR{$t \in \{\mathbf{p}\}$}
 \STATE $p | p = t \leftarrow \text{argmax}_{i = t - 4, ..., t, ..., t + 4} x_i$
 \ENDFOR
