@@ -149,11 +149,9 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 \end{algorithmic}
 \end{algorithm}
 
-\newpage
-
 ### Visualising ECG signal processing
 
-```{r ecg-process, fig.height = 11, fig.width = 7}
+```{r ecg-process, fig.height = 9, fig.width = 7}
 ```
 
 ## Modelling rate of breathing by heart rate
