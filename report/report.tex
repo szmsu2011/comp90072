@@ -124,7 +124,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Respiratory Rate Determination by ECG Signals - Incomplete},
+  pdftitle={Respiratory Rate Determination by ECG Signals},
   pdfauthor={Stephen Su, 844503, COMP90072},
   colorlinks=true,
   linkcolor={Maroon},
@@ -133,7 +133,7 @@
   urlcolor={blue},
   pdfcreator={LaTeX via pandoc}}
 
-\title{Respiratory Rate Determination by ECG Signals - Incomplete}
+\title{Respiratory Rate Determination by ECG Signals}
 \author{Stephen Su, 844503, COMP90072}
 \date{}
 
@@ -239,11 +239,59 @@ creating a challenge in computing heart rate from the ECG signal.
 \caption{Left: sudden spike in noise; right: frequency spectrum of the ECG signal}\label{fig:ecg-noise}
 \end{figure}
 
+Cardio-activities are reflected in the ECG signal as time series of QRS
+complex as counts for complete heart beats (Ary L. Goldberger \&
+Shvilkin, 2017), where the instantaneous heart rates are determined by
+the interval of consecutive R-peaks, characterised by a positive crest
+in electric potential with a frequency of approximately 10--20Hz, and
+are distinguishable from P and T peaks with frequencies mostly below
+5Hz.
+
+Apart from muscle-induced electric noise, another challenge arises from
+abnormally peaked P and T waves from a variety of heart conditions (for
+example, abnormally peaked T waves observed on subject
+\protect\hyperlink{visual}{a02}). Upon de-noising the ECG signal, it is
+also needed to suppress the peaks for P and T waves. Otherwise, they
+become less distinguishable from the R peaks amplitude-wise and might be
+mistakenly flagged as R peaks.
+
+\begin{figure}
+
+{\centering \includegraphics{report_files/figure-latex/qrs-1} 
+
+}
+
+\caption{An example QRS complex from the ECG signal for one complete heart beat}\label{fig:qrs}
+\end{figure}
+
+Intuitively, the simplest method for reducing the noise and suppressing
+P and T peaks is to filter out their typical frequencies. With observed
+frequencies of noise from the frequency spectrum mostly above 20Hz, and
+the characteristic frequencies of P and T waves being below 5Hz, we may
+utilise the Discrete Fourier Transform (DFT) (Cooley \& Tukey, 1965), to
+create a band-pass filter, retaining only 5--20Hz signals from the ECG
+data. The DFT transformed signal compromises the Nyquist frequency bins
+(with its range being half of sampling frequency) (Nyquist, 1928)
+corresponding to each of the harmonic. The band-pass filtered signal is
+then obtained by applying the (normalised) inverse Discrete Fourier
+Transform to the DFT transformed signal, with zeroed frequency bins for
+0-5 and 20-50Hz. For computational efficiency, the Discrete Fourier
+Transform is implemented by R (R Core Team, 2023) with the Fast Fourier
+Transform (FFT) algorithm (Becker et al., 1988; Singleton, 1979), based
+on C translation of Fortran code in Singleton (1979).
+
+It is worth noting that, the DFT approach to band-pass filtering as per
+outlined above has not accounted for the modulation effect from Fourier
+Transform, and will likely cause phase shifts in the de-noised signals.
+Nevertheless, upon thorough inspection, the observed phase error in the
+filtered output are mostly within 10--20ms, and easily correctable with
+local peak-matching, which is discussed in the following paragraph.
+
 \begin{algorithm}
-\caption{5-20Hz band-pass filter with discrete Fourier transform}
+\caption{5--20Hz band-pass filter with Discrete Fourier Transform}
 \begin{algorithmic}[1]
 \STATE Take $\mathbf{x} \in \mathbb{R}^n$ as the 100-Hz input
-\STATE Obtain $\mathbf{y}$ by discrete Fourier transform on $\mathbf{x}$
+\STATE Obtain $\mathbf{y}$ by Discrete Fourier Transform on $\mathbf{x}$
 \FOR{$t = 1, ..., n$}
 \STATE $y_t \leftarrow \sum_{k = 1}^n{x_k}\text{exp}(-2\pi i(k - 1)(t - 1) / n)$
 \ENDFOR
@@ -251,7 +299,7 @@ creating a challenge in computing heart rate from the ECG signal.
 \FOR{$t = 1, ..., n \land (t \in (0.2n, 0.8n) \lor t > 0.95n \lor t < 0.05n)$}
 \STATE $y_t \leftarrow 0 + 0i$
 \ENDFOR
-\STATE Obtain $\mathbf{z}$ by normalised inverse discrete Fourier transform on $\mathbf{y}$
+\STATE Obtain $\mathbf{z}$ by normalised inverse Discrete Fourier Transform on $\mathbf{y}$
 \FOR{$t = 1, ..., n$}
 \STATE $z_t \leftarrow \sum_{k = 1}^n{y_k}\text{exp}(2\pi i(k - 1)(t - 1) / n) / n$
 \ENDFOR
@@ -311,9 +359,8 @@ signals}\label{heart-rate-derivation-from-ecg-signals}}
 \end{algorithmic}
 \end{algorithm}
 
-\hypertarget{visualising-ecg-signal-processing}{%
-\subsubsection{Visualising ECG signal
-processing}\label{visualising-ecg-signal-processing}}
+\hypertarget{visual}{%
+\subsubsection{Visualising ECG signal processing}\label{visual}}
 
 \begin{center}\includegraphics{report_files/figure-latex/ecg-process-1} \end{center}
 
@@ -771,12 +818,27 @@ processing}\label{data-wrangling-and-signal-processing}}
 
 \hypertarget{refs}{}
 \begin{CSLReferences}{1}{1}
+\leavevmode\vadjust pre{\hypertarget{ref-Goldberger2017}{}}%
+Ary L. Goldberger, Z. D. G., \& Shvilkin, A. (2017). \emph{Goldberger's
+clinical electrocardiography} (9th ed.). Elsevier.
+\url{https://doi.org/10.1016/C2014-0-03319-9}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Becker1988}{}}%
+Becker, R. A., Chambers, J. M., \& Wilks, A. R. (1988). \emph{The new s
+language}. Wadsworth \& Brooks/Cole.
+
 \leavevmode\vadjust pre{\hypertarget{ref-Belkin2019}{}}%
 Belkin, M., Hsu, D., Ma, S., \& Mandal, S. (2019). Reconciling modern
 machine-learning practice and the classical bias{\textendash}variance
 trade-off. \emph{Proceedings of the National Academy of Sciences},
 \emph{116}(32), 15849--15854.
 \url{https://doi.org/10.1073/pnas.1903070116}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Cooley1965}{}}%
+Cooley, J. W., \& Tukey, J. W. (1965). An algorithm for the machine
+calculation of complex fourier series. \emph{Mathematics of
+Computation}, \emph{19}(90), 297--301.
+\url{https://doi.org/10.2307/2003354}
 
 \leavevmode\vadjust pre{\hypertarget{ref-goldberger2000}{}}%
 Goldberger, A. L., Amaral, L. A., Glass, L., Hausdorff, J. M., Ivanov,
@@ -802,15 +864,31 @@ Nakkiran, P., Kaplun, G., Bansal, Y., Yang, T., Barak, B., \& Sutskever,
 I. (2019). \emph{Deep double descent: Where bigger models and more data
 hurt}. \url{https://arxiv.org/abs/1912.02292}
 
+\leavevmode\vadjust pre{\hypertarget{ref-Nyquist1928}{}}%
+Nyquist, H. (1928). Certain topics in telegraph transmission theory.
+\emph{Transactions of the American Institute of Electrical Engineers},
+\emph{47}(2), 617--644.
+\url{https://doi.org/10.1109/T-AIEE.1928.5055024}
+
 \leavevmode\vadjust pre{\hypertarget{ref-penzel2000}{}}%
 Penzel, T., Moody, G. B., Mark, R. G., Goldberger, A. L., \& Peter, J.
 H. (2000). The apnea-ecg database. \emph{Computers in Cardiology 2000},
 255--258.
 
+\leavevmode\vadjust pre{\hypertarget{ref-R}{}}%
+R Core Team. (2023). \emph{R: A language and environment for statistical
+computing}. R Foundation for Statistical Computing.
+\url{https://www.R-project.org/}
+
 \leavevmode\vadjust pre{\hypertarget{ref-Shamoon2004}{}}%
 Shamo'on, H., Hawamdah, A., Haddadin, R., \& Jmeian, S. (2004).
 Detection of pneumonia among children under six years by clinical
 evaluation. \emph{East Mediterr Health J}, \emph{10}(4-5), 482--487.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Sing1979}{}}%
+Singleton, R. C. (1979). Mixed radix fast fourier transforms. In IEEE
+Digital Signal Processing Committee (Ed.), \emph{Programs for digital
+signal processing}. IEEE Press.
 
 \leavevmode\vadjust pre{\hypertarget{ref-Wald1943}{}}%
 Wald, A. (1943). Tests of statistical hypotheses concerning several

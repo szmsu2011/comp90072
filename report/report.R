@@ -3,11 +3,22 @@ a01 <- read_ecg("../data-bin/a01.dat")
 a02 <- read_ecg("../data-bin/a02.dat")
 plot(a02, 198000:201000) + plot(frequency(a01))
 
+## ---- qrs
+smooth.spline(head(a01, 80), lambda = 1e-6)$y |>
+  structure(class = class(a01)) |>
+  plot() +
+  annotate("text",
+    x = c(.27, .35, .39, .43, .66),
+    y = c(.18, -.33, 1, -.68, .29),
+    label = c("P", "Q", "R", "S", "T"),
+    size = 5
+  )
+
 ## ---- ecg-process
 p1 <- plot(a02, 1000:2000) +
-  labs(title = "(1) Raw ECG signal")
+  labs(title = "(1) Raw ECG signal for subject a02")
 p2 <- plot(noise_filter(a02), 1000:2000) +
-  labs(title = "(2) FFT filter to suppress P and T waves")
+  labs(title = "(2) DFT filter to suppress P and T waves")
 p3 <- plot(find_r_peaks(noise_filter(a02)), 1000:2000) +
   labs(title = "(3) Find R peak on filtered signal")
 p4 <- plot(find_r_peaks(a02), 1000:2000) +

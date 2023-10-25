@@ -1,5 +1,5 @@
 ---
-title: "Respiratory Rate Determination by ECG Signals - Incomplete"
+title: "Respiratory Rate Determination by ECG Signals"
 author: "Stephen Su, 844503, COMP90072"
 output:
   pdf_document:
@@ -79,11 +79,22 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 ```{r ecg-noise, fig.height = 3.2, fig.cap = "Left: sudden spike in noise; right: frequency spectrum of the ECG signal"}
 ```
 
+Cardio-activities are reflected in the ECG signal as time series of QRS complex as counts for complete heart beats [@Goldberger2017], where the instantaneous heart rates are determined by the interval of consecutive R-peaks, characterised by a positive crest in electric potential with a frequency of approximately 10--20Hz, and are distinguishable from P and T peaks with frequencies mostly below 5Hz.
+
+Apart from muscle-induced electric noise, another challenge arises from abnormally peaked P and T waves from a variety of heart conditions (for example, abnormally peaked T waves observed on subject [a02](#visual)). Upon de-noising the ECG signal, it is also needed to suppress the peaks for P and T waves. Otherwise, they become less distinguishable from the R peaks amplitude-wise and might be mistakenly flagged as R peaks.
+
+```{r qrs, fig.height = 3.2, fig.cap = "An example QRS complex from the ECG signal for one complete heart beat"}
+```
+
+Intuitively, the simplest method for reducing the noise and suppressing P and T peaks is to filter out their typical frequencies. With observed frequencies of noise from the frequency spectrum mostly above 20Hz, and the characteristic frequencies of P and T waves being below 5Hz, we may utilise the Discrete Fourier Transform (DFT) [@Cooley1965], to create a band-pass filter, retaining only 5--20Hz signals from the ECG data. The DFT transformed signal compromises the Nyquist frequency bins (with its range being half of sampling frequency) [@Nyquist1928] corresponding to each of the harmonic. The band-pass filtered signal is then obtained by applying the (normalised) inverse Discrete Fourier Transform to the DFT transformed signal, with zeroed frequency bins for 0-5 and 20-50Hz. For computational efficiency, the Discrete Fourier Transform is implemented by R [@R] with the Fast Fourier Transform (FFT) algorithm [@Becker1988; @Sing1979], based on C translation of Fortran code in Singleton (1979).
+
+It is worth noting that, the DFT approach to band-pass filtering as per outlined above has not accounted for the modulation effect from Fourier Transform, and will likely cause phase shifts in the de-noised signals. Nevertheless, upon thorough inspection, the observed phase error in the filtered output are mostly within 10--20ms, and easily correctable with local peak-matching, which is discussed in the following paragraph.
+
 \begin{algorithm}
-\caption{5-20Hz band-pass filter with discrete Fourier transform}
+\caption{5--20Hz band-pass filter with Discrete Fourier Transform}
 \begin{algorithmic}[1]
 \STATE Take $\mathbf{x} \in \mathbb{R}^n$ as the 100-Hz input
-\STATE Obtain $\mathbf{y}$ by discrete Fourier transform on $\mathbf{x}$
+\STATE Obtain $\mathbf{y}$ by Discrete Fourier Transform on $\mathbf{x}$
 \FOR{$t = 1, ..., n$}
 \STATE $y_t \leftarrow \sum_{k = 1}^n{x_k}\text{exp}(-2\pi i(k - 1)(t - 1) / n)$
 \ENDFOR
@@ -91,7 +102,7 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 \FOR{$t = 1, ..., n \land (t \in (0.2n, 0.8n) \lor t > 0.95n \lor t < 0.05n)$}
 \STATE $y_t \leftarrow 0 + 0i$
 \ENDFOR
-\STATE Obtain $\mathbf{z}$ by normalised inverse discrete Fourier transform on $\mathbf{y}$
+\STATE Obtain $\mathbf{z}$ by normalised inverse Discrete Fourier Transform on $\mathbf{y}$
 \FOR{$t = 1, ..., n$}
 \STATE $z_t \leftarrow \sum_{k = 1}^n{y_k}\text{exp}(2\pi i(k - 1)(t - 1) / n) / n$
 \ENDFOR
@@ -149,7 +160,7 @@ The ECG signal does not provide the heart rate directly. Instead, it is a time s
 \end{algorithmic}
 \end{algorithm}
 
-### Visualising ECG signal processing
+### Visualising ECG signal processing {#visual}
 
 ```{r ecg-process, fig.height = 9, fig.width = 7}
 ```
