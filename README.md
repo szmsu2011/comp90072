@@ -5,16 +5,14 @@
 
 This repository consists of an R project for COMP90072 - The Art of
 Scientific Computation, holding the source files for reproducing the
-deliverables, including the code files and their version history.
+deliverable, including the code files and their version history.
 
 ## Requirements
 
-To reproduce the deliverables of the project, you will need to install
+To reproduce the deliverable of the project, you will need to install
 the following packages and their dependencies as follows:
 
 ``` r
-install.packages("xaringan")
-install.packages("xaringanthemer")
 install.packages("tidyverse")
 install.packages("zoo")
 install.packages("patchwork")
@@ -24,9 +22,17 @@ tinytex::install_tinytex()
 
 ## Reproducible research
 
-The deliverables of the project consist of a PDF report rendered by
+The deliverable of the project consists of a PDF report rendered by
 RMarkdown.
 
 ``` r
 rmarkdown::render("report/report.Rmd")
 ```
+
+The [report](https://github.com/szmsu2011/comp90072/tree/main/report)
+directory consists of source files for reproducing the PDF report. The
+[R](https://github.com/szmsu2011/comp90072/tree/main/R) directory
+consists of source files for the functions used in the workflow for the
+PDF report. The
+[data-bin](https://github.com/szmsu2011/comp90072/tree/main/data-bin)
+directory holds the binary data files for the project.
