@@ -32,6 +32,6 @@ rmarkdown::render("report/report.Rmd")
 The [report](https://github.com/szmsu2011/comp90072/tree/main/report)
 directory consists of source files for reproducing the PDF report. The
 [R](https://github.com/szmsu2011/comp90072/tree/main/R) directory
-consists of source files for the functions used and caches. The
+consists of source files for the R functions and workflow caches. The
 [data-bin](https://github.com/szmsu2011/comp90072/tree/main/data-bin)
 directory holds the binary data files for the project.
