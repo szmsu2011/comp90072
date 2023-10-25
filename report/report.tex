@@ -284,21 +284,24 @@ outlined above has not accounted for the modulation effect from Fourier
 Transform, and will likely cause phase shifts in the de-noised signals.
 Nevertheless, upon thorough inspection, the observed phase error in the
 filtered output are mostly within 10--20ms, and easily correctable with
-local peak-matching, which is discussed in the following paragraph.
+local peak-matching, which is discussed in the following paragraphs.
+
+\emph{Note: most ``for loops'' in the pseudocode algorithms in this
+report are implicitly implemented by vectorisation.}
 
 \begin{algorithm}
 \caption{5--20Hz band-pass filter with Discrete Fourier Transform}
 \begin{algorithmic}[1]
 \STATE Take $\mathbf{x} \in \mathbb{R}^n$ as the 100-Hz input
-\STATE Obtain $\mathbf{y}$ by Discrete Fourier Transform on $\mathbf{x}$
+\STATE Obtain $\mathbf{y}$ by Discrete Fourier Transform on $\mathbf{x}$:
 \FOR{$t = 1, ..., n$}
 \STATE $y_t \leftarrow \sum_{k = 1}^n{x_k}\text{exp}(-2\pi i(k - 1)(t - 1) / n)$
 \ENDFOR
-\STATE Zero corresponding (Nyquist) frequency bins for 0-5, 20-50Hz
+\STATE Zero corresponding (Nyquist) frequency bins for 0-5, 20-50Hz:
 \FOR{$t = 1, ..., n \land (t \in (0.2n, 0.8n) \lor t > 0.95n \lor t < 0.05n)$}
 \STATE $y_t \leftarrow 0 + 0i$
 \ENDFOR
-\STATE Obtain $\mathbf{z}$ by normalised inverse Discrete Fourier Transform on $\mathbf{y}$
+\STATE Obtain $\mathbf{z}$ by normalised inverse Discrete Fourier Transform on $\mathbf{y}$:
 \FOR{$t = 1, ..., n$}
 \STATE $z_t \leftarrow \sum_{k = 1}^n{y_k}\text{exp}(2\pi i(k - 1)(t - 1) / n) / n$
 \ENDFOR
@@ -306,31 +309,62 @@ local peak-matching, which is discussed in the following paragraph.
 \end{algorithmic}
 \end{algorithm}
 
-(Incomplete)
+With the de-noised ECG signal, a special algorithm for timestamping the
+R peaks is developed based on logical check for local maxima and double
+thresholding. For the amplitudes of P and T peaks are suppressed in the
+filtered signal, the local maxima above certain threshold in the series
+are the R peaks. For a series of discrete-time signal, the local maxima
+are indicated by whenever the signs of the first difference change from
+\emph{positive} to \emph{negative}. Also, as the R peaks are more than
+triple the amplitude of the DFT suppressed P and T peaks, all local
+maxima with an amplitude of at least half (in prudence) the amplitude of
+previous peak are indicated as the R peaks. Upon implementation, the
+threshold is set at half of the rolling maxima for the last 101 ticks
+(1.01s). For extra caution to unlikely events when there is no heart
+beat in the past 1.01 seconds, a second threshold, the 95\% empirical
+quantile of amplitude of the signal, is imposed. All time-points in the
+filtered ECG signal that are deemed as local maxima also with amplitude
+above the two thresholds are stamped as R peaks. The algorithm is fast
+even for long ECG signal.
+
+There are, however, issues that cannot be dealt with via aforementioned
+algorithms. While the algorithms are robust against moderate noise with
+filtering, they will unlikely function in the presence of extreme noise
+with amplitude exceeding the original signal. Under such extreme noise,
+which is rarely seen, the stamped R peaks would manifest small clusters
+of abnormally short R-R intervals, typically below 300ms. Therefore, an
+additional check is implemented to identify and remove all the abnormal
+timestamps. Another issue with the algorithm is the phase shift induced
+by Fourier Transform. Without taking care for the modulation harmonics,
+the timestamps obtained from the filtered signal are \(\pm10\)--20ms
+away from the true observed R peaks in the original signal. Fortunately,
+the phase errors are small and can be easily corrected by searching for
+the existence of another peak around the neighbours in the original
+signal.
 
 \begin{algorithm}
 \caption{R peak timestamping with phase correction}
 \begin{algorithmic}[1]
 \STATE Take the original $\mathbf{x} \in \mathbb{R}^n$ and the filtered $\mathbf{z} \in \mathbb{R}^n$ as the 100-Hz inputs
-\STATE Set moving threshold $\mathbf{b}$ as half of rolling maximum
-\STATE $(b_t | t = 1, ..., 100) \leftarrow (+\infty)_{\times 100}$
+\STATE Set moving threshold $\mathbf{b}$ as half of rolling maximum:
+\STATE $(b_t | t = 1, ..., 100) \leftarrow (+\infty)_{\times 100}$ (rolling maxima is undefined for the first second, pad using $+\infty$)
 \FOR{$t = 101, ..., n$}
 \STATE $b_t \leftarrow \frac{1}{2}\text{max}\{z_{t - 100}, ..., z_t\}$
 \ENDFOR
-\STATE Create thresholding indicator $\boldsymbol{\iota^{(1)}}$
+\STATE Create thresholding Boolean $\boldsymbol{\iota^{(1)}}$:
 \FOR{$t = 1, ..., n$}
 \STATE $\iota^{(1)}_t \leftarrow I(z_t > \text{max}\{b_t, F^{-1}_{Z}(0.95)\})$
 \ENDFOR
-\STATE Create concave-peak indicator $\boldsymbol{\iota^{(2)}}$
+\STATE Create local maxima Boolean $\boldsymbol{\iota^{(2)}}$:
 \FOR{$t = 1, n$}
-\STATE $\iota^{(2)}_t \leftarrow 0$
+\STATE $\iota^{(2)}_t \leftarrow 0$ (local maxima are undefined for the boundaries)
 \ENDFOR
 \FOR{$t = 2, ..., n - 1$}
 \STATE $\iota^{(2)}_t \leftarrow I[I(z_{t + 1} - z_t > 0) - I(z_t - z_{t - 1} > 0) = -1]$
 \ENDFOR
-\STATE Preliminary timestamps for R peak $\mathbf{p} \leftarrow (t = 1, ..., n | \iota^{(1)}_t \land \iota^{(2)}_t \text{ is True})$
+\STATE Preliminary timestamps for R peak $\mathbf{p} \leftarrow (t = 1, ..., n | \iota^{(1)}_t \land \iota^{(2)}_t = 1 \text{ is True})$
 \STATE Remove abnormal timestamps in $\mathbf{p}$ with R-R intervals of < 300ms
-\STATE Correct phase-shifts caused by discrete Fourier transform
+\STATE Correct phase-shifts caused by discrete Fourier Transform:
 \FOR{$t \in \{\mathbf{p}\}$}
 \STATE $p | p = t \leftarrow \text{argmax}_{i = t - 4, ..., t, ..., t + 4} x_i$
 \ENDFOR
@@ -350,7 +384,7 @@ signals}\label{heart-rate-derivation-from-ecg-signals}}
 \STATE Take $\mathbf{p}$ the timestamps of the R peak as the input, and $\nu$ as an argument for the frequency unit of $\mathbf{p}$
 \STATE $m \leftarrow \text{dim}(\mathbf{p})$ dimension of $\mathbf{p}$
 \STATE Compute the R-R intervals $\mathbf{d}$
-\STATE $(d_t | t = 1, ..., p_1) \leftarrow (\text{NA})_{\times p_1}$
+\STATE $(d_t | t = 1, ..., p_1) \leftarrow (\text{NA})_{\times p_1}$ (heart rate is undefined before the first beat)
 \STATE $(d_t | t = p_1 + 1, ..., p_{m}) \leftarrow ((p_2 - p_1)_{\times (p_2 - p_1)}, (p_3 - p_2)_{\times (p_3 - p_2)}, ..., (p_{m} - p_{m - 1})_{\times (p_{m} - p_{m - 1})})^\top$
 \STATE Convert R-R intervals into heart rates per minute $\mathbf{h}$
 \STATE $\mathbf{h} \leftarrow 60 \cdot \nu / \mathbf{d}$
