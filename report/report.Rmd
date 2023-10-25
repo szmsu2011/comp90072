@@ -57,7 +57,7 @@ A potential solution to the problem above arises from the phenomenon of *respira
 
 ## The data
 
-The *apnea-ECG database* [@penzel2000] on *PhysioNet* [@goldberger2000] provides sufficiently large data sets of approximately eight hours long records of electrocardiogram and respiratory signals for eight subjects in a study for *sleep apnea*. The eight records consist of 100Hz signal from the electrocardiogram (ECG), respiratory effort from chest/abdomen movements, nasal airflow, and blood O$_2$ saturation over time.
+The *apnea-ECG database* [@Penzel2000] on *PhysioNet* [@Goldberger2000] provides sufficiently large data sets of approximately eight hours long records of electrocardiogram and respiratory signals for eight subjects in a study for *sleep apnea*. The eight records consist of 100Hz signal from the electrocardiogram (ECG), respiratory effort from chest/abdomen movements, nasal airflow, and blood O$_2$ saturation over time.
 
 A major concern of using such data is the misalignment of objective for the researches. Study for apnea typically involves subjects with airway obstruction, a factor that must be considered for prior to building our model. Under the presumption that, subjects in our data might sometimes stop breathing, the response variable of interest should be robust from the presence of apnea. Therefore, the model will focus on exploring the algorithm for determining the respiratory rate from the ECG signal as a predictor for the respiratory rate implied by chest movements, assuming that for living humans, respiratory efforts are always present.
 
