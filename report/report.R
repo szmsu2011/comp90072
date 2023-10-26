@@ -14,6 +14,13 @@ smooth.spline(head(a01, 80), lambda = 1e-6)$y |>
     size = 5
   )
 
+## ---- demo
+r_peak <- c(3, 7, 10, 12)
+r_peak
+rr_interval <- c(rep(NA, r_peak[1]), rep(diff(r_peak), diff(r_peak)))
+rr_interval
+length(rr_interval)
+
 ## ---- ecg-process
 p1 <- plot(a02, 1000:2000) +
   labs(title = "(1) Raw ECG signal for subject a02")

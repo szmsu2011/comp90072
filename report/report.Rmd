@@ -150,21 +150,30 @@ There are, however, issues that cannot be dealt with via aforementioned algorith
 
 ### Heart rate derivation from ECG signals
 
-(Incomplete)
+Once all the time points of R peaks are identified, we have cleared all obstructions to determining the heart rate. At any point in time within the series of ECG signal, the instantaneous heart rate is determined by interval between the subsequent and consequent R peaks. While one might explicitly loop over all the $5 \times 3$ million data points in ECG to obtain the series of intervals between R peaks, the process can be more efficient via vectorisation. It can be shown, with an example, that the derived series of R-R interval as a function of series of timestamps of the R peaks, is equivalent to repeating the differenced timestamps each for numbers of times equalled to the differenced timestamps themselves.
+
+*For example, the R peaks are on the 3rd, 7th, 10th and 12th time ticks (for illustration purpose only), then the series of R-R interval can be computed by the following R (R Core Team, 2023) code:*
+
+```{r demo, echo = TRUE}
+```
+
+The series of instantaneous heart rate per minute is then obtainable by 60 $\times$ frequency $/$ R-R intervals.
 
 \begin{algorithm}
 \caption{Deriving instantaneous heart rates from R peak timestamps}
 \begin{algorithmic}[1]
 \STATE Take $\mathbf{p}$ the timestamps of the R peak as the input, and $\nu$ as an argument for the frequency unit of $\mathbf{p}$
 \STATE $m \leftarrow \text{dim}(\mathbf{p})$ dimension of $\mathbf{p}$
-\STATE Compute the R-R intervals $\mathbf{d}$
-\STATE $(d_t | t = 1, ..., p_1) \leftarrow (\text{NA})_{\times p_1}$ (heart rate is undefined before the first beat)
+\STATE Compute the R-R intervals $\mathbf{d}$:
+\STATE $(d_t | t = 1, ..., p_1) \leftarrow (\text{NA})_{\times p_1}$ (heart rate is undefined before the first R peak)
 \STATE $(d_t | t = p_1 + 1, ..., p_{m}) \leftarrow ((p_2 - p_1)_{\times (p_2 - p_1)}, (p_3 - p_2)_{\times (p_3 - p_2)}, ..., (p_{m} - p_{m - 1})_{\times (p_{m} - p_{m - 1})})^\top$
-\STATE Convert R-R intervals into heart rates per minute $\mathbf{h}$
+\STATE Convert R-R intervals into heart rates per minute $\mathbf{h}$:
 \STATE $\mathbf{h} \leftarrow 60 \cdot \nu / \mathbf{d}$
 \RETURN $\mathbf{h}$ the heart rates per minute at frequency $\nu$
 \end{algorithmic}
 \end{algorithm}
+
+The output series of instantaneous heart rate is a signal at 100Hz with stepped (quantised) values, as the resolution of the derived heart rate is limited by the sampling frequency of the ECG signal (see next page).
 
 ### Visualising ECG signal processing {#visual}
 
@@ -295,7 +304,7 @@ A Bayesian extension to our model into a *random effects model* is able to free 
 
 Deep learning with *artificial neural networks* gives another direction for further researches. The advantage of deep learning over *classical* statistics is that it pushes the model beyond *bias-variance tradeoff*. While for *classical* methods the effective number of parameters cannot exceed the training sample size, the model complexity of neural network is not restricted by its training sample. Notwithstanding for both deep learning and *classical* methods, the predictive power suffers whenever the effective parameter size grows toward the training sample size, the over-parameterisation in neural networks allows for a second descent in the loss curve (also referred to as risk curve), in a phenomenon called the *double descent* [@Belkin2019]. Such effect of *double descent* has only recently been shown by research in *convolutional neural network*, *residual neural network* and *transformers* [@Nakkiran2019].
 
-```{r ddd, out.width = "100%", fig.cap = "Visualisation in (Belkin et al., 2019): (a) Bias-variance tradeoff in classical methods. (b) Double descent loss curve from modern interpolating regime, potentially giving better predictions."}
+```{r ddd, out.width = "100%", fig.cap = "Visualisation in Belkin et al. (2019): (a) Bias-variance tradeoff in classical methods. (b) Double descent loss curve from modern interpolating regime, potentially giving better predictions."}
 knitr::include_graphics("figure/ddd.png")
 ```
 
