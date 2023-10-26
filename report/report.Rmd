@@ -76,7 +76,7 @@ This study will divide records from the eight subjects into two sets:
 
 The ECG signal does not provide the heart rate directly. Instead, it is a time series of varying electric potential that controls the rhythm of the contraction and relaxation of the heart muscle, with a magnitude of approximately 0.5mV in absolute value. Such a signal is often masked by unwanted noise, such as electric signals from pectoral muscle movement, creating a challenge in computing heart rate from the ECG signal.
 
-```{r ecg-noise, fig.height = 3.2, fig.cap = "Left: sudden spike in noise; right: frequency spectrum of the ECG signal"}
+```{r ecg-noise, fig.height = 4.7, fig.cap = "Top: sudden spike in noise; bottom: frequency spectrum of the ECG signal"}
 ```
 
 Cardio-activities are reflected in the ECG signal as time series of QRS complex as counts for complete heart beats [@Goldberger2017], where the instantaneous heart rates are determined by the interval of consecutive R-peaks, characterised by a positive crest in electric potential with a frequency of approximately 10--20Hz, and are distinguishable from P and T peaks with frequencies mostly below 5Hz.
@@ -120,7 +120,7 @@ There are, however, issues that cannot be dealt with via aforementioned algorith
 \caption{R peak timestamping with phase correction}
 \begin{algorithmic}[1]
 \STATE Take the original $\mathbf{x} \in \mathbb{R}^n$ and the filtered $\mathbf{z} \in \mathbb{R}^n$ as the 100-Hz inputs
-\STATE Set moving threshold $\mathbf{b}$ as half of rolling maximum:
+\STATE Set moving threshold $\mathbf{b}$ as half of rolling maxima:
 \STATE $(b_t | t = 1, ..., 100) \leftarrow (+\infty)_{\times 100}$ (rolling maxima is undefined for the first second, pad using $+\infty$)
 \FOR{$t = 101, ..., n$}
 \STATE $b_t \leftarrow \frac{1}{2}\text{max}\{z_{t - 100}, ..., z_t\}$
@@ -145,6 +145,8 @@ There are, however, issues that cannot be dealt with via aforementioned algorith
 \RETURN $\mathbf{p}$ the timestamps of the R peak
 \end{algorithmic}
 \end{algorithm}
+
+\newpage
 
 ### Heart rate derivation from ECG signals
 

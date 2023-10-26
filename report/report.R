@@ -1,7 +1,7 @@
 ## ---- ecg-noise
 a01 <- read_ecg("../data-bin/a01.dat")
 a02 <- read_ecg("../data-bin/a02.dat")
-plot(a02, 198000:201000) + plot(frequency(a01))
+plot(a02, 198000:201000) / plot(frequency(a01))
 
 ## ---- qrs
 smooth.spline(head(a01, 80), lambda = 1e-6)$y |>
