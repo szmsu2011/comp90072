@@ -211,8 +211,6 @@ This study will divide records from the eight subjects into two sets:
   Subjects c01, c02 and c03 form the \emph{test set} for evaluation.
 \end{itemize}
 
-\newpage
-
 \hypertarget{methodologies-and-implementation}{%
 \section{Methodologies and
 implementation}\label{methodologies-and-implementation}}
@@ -501,7 +499,7 @@ derivative (which represents the roughness) of the smoothed curve,
 depictable as a function:
 
 \begin{align}
-  \mathbf{\hat{a}} = \hat{f}(\mathbf{t} ; \lambda) = \mathop{\arg\min}\limits_{f(\mathbf{t})} \Bigr\{\sum_{t = 1}^{\dim(\mathbf{a})}(a_t - f(t))^2 + \lambda\int_t f''(s)^2ds\Bigr\} \text{ given any } \lambda > 0
+  \mathbf{\hat{a}} = \hat{f}(\mathbf{t} ; \lambda) = \mathop{\arg\min}\limits_{f(\mathbf{t})} \Bigr\{||\mathbf{a} - f(\mathbf{t})||^2 + \lambda\int_t f''(s)^2ds\Bigr\} \text{ given any } \lambda > 0
 \end{align}
 
 Where \(\lambda\) is the regularisation parameter controlling the
@@ -576,7 +574,28 @@ balance accuracy and efficiency.
 \hypertarget{mod-train}{%
 \subsubsection{Model training}\label{mod-train}}
 
-(Incomplete)
+The outlined algorithm for counting the number of oscillations in heart
+rates and chest movements signal is in fact a non-parametric predictive
+model, uniquely defined by the training data and the hyperparameter (as
+it is not directly involved in prediction) \(\lambda\). As such, the
+main objective is to find the optimal value for \(\lambda\).
+
+The final model in this project attempts to predict ``breaths per minute
+by chest movements'' (denote \(\mathbf{r}\)) derived (by Algorithm 4)
+from the time series of ``chest movements signal'' (denote
+\(\mathbf{c}\)), with the ``instantaneous heart rates'' (denote
+\(\mathbf{h}\)). Thus ultimately, the optimal
+\(\lambda = \hat{\lambda}_\text{opt}\) is found such that the derived
+(again by Algorithm 4) ``breaths per minute from the heart rate''
+(denote \(\mathbf{\hat{r}}\)), as an estimator of \(\mathbf{r}\),
+minimises
+
+\begin{align*}
+  ||\mathbf{r} - \mathbf{\hat{r}}||^2 = ||\mathbf{r} - \hat{f}(\mathbf{h}; \lambda)||^2 = ||\hat{f}(\mathbf{c}) - \hat{f}(\mathbf{h}; \lambda)||^2
+\end{align*}
+
+The observed and estimated counts are realised once per minute outlined
+as of below, the \emph{core} of this project:
 
 \begin{algorithm}
 \caption{Deriving breath rate from heart rate based on chest movements}
@@ -603,8 +622,6 @@ balance accuracy and efficiency.
 \RETURN data matrix $(\mathbf{r}, \mathbf{\hat{r}})$, a bivariate time series (minutely), $\mathbf{r} :=$ "count of breaths by chest movements (observations)" and $\mathbf{\hat{r}} :=$ "number of breaths derived by cardio-activities of that minute (fitted values)", and most importantly $\hat{\lambda}_\text{opt}$ the trained parameter for our final model!
 \end{algorithmic}
 \end{algorithm}
-
-\newpage
 
 \hypertarget{model-diagnostics}{%
 \subsection{Model diagnostics}\label{model-diagnostics}}
@@ -694,8 +711,6 @@ which provides a very strong evidence for the estimator
 \(\mathbf{\hat{r}}\) being biased. However, a further assessment on the
 95\% asymptotic confidence interval of \(\beta\), (0.9521173,
 0.9724053), indicates the bias is acceptable.
-
-\newpage
 
 \hypertarget{conclusion-and-further-research}{%
 \section{Conclusion and further
@@ -808,7 +823,17 @@ output}\label{appendix-model-training-workflow-code-and-output}}
 
 The source codes for the functions used in the workflow are in the
 \texttt{.R} files at
-\href{https://github.com/szmsu2011/comp90072/blob/main/R}{/R}.
+\href{https://github.com/szmsu2011/comp90072/blob/main/R}{/R}. Code
+presented in this Appendix involved self-defined functions and will not
+work outside this project environment, unless they are sourced from the
+aforementioned source code directory in the project repository:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{r\_source }\OtherTok{\textless{}{-}} \FunctionTok{list.files}\NormalTok{(}\StringTok{"/R"}\NormalTok{, }\AttributeTok{full.names =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{purrr}\SpecialCharTok{::}\FunctionTok{map}\NormalTok{(r\_source[stringr}\SpecialCharTok{::}\FunctionTok{str\_detect}\NormalTok{(r\_source, }\StringTok{"}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{.R$"}\NormalTok{)], source)}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{data-wrangling-and-signal-processing}{%
 \subsection{Data wrangling and signal

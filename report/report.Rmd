@@ -66,8 +66,6 @@ This study will divide records from the eight subjects into two sets:
   - Subjects a01, a02, a03, a04 and b01 form the *training set*.
   - Subjects c01, c02 and c03 form the *test set* for evaluation.
 
-\newpage
-
 # Methodologies and implementation
 
 ## Data wrangling
@@ -203,7 +201,7 @@ Nonetheless, the mean crossing estimate only works well if, and only if each osc
 The smoothing spline [@Hastie1990; @Green1994] is a bivariate smoothing method based on regularised regression to a natural cubic spline basis, penalised by the integrated squared second derivative (which represents the roughness) of the smoothed curve, depictable as a function:
 
 \begin{align}
-  \mathbf{\hat{a}} = \hat{f}(\mathbf{t} ; \lambda) = \mathop{\arg\min}\limits_{f(\mathbf{t})} \Bigr\{\sum_{t = 1}^{\dim(\mathbf{a})}(a_t - f(t))^2 + \lambda\int_t f''(s)^2ds\Bigr\} \text{ given any } \lambda > 0
+  \mathbf{\hat{a}} = \hat{f}(\mathbf{t} ; \lambda) = \mathop{\arg\min}\limits_{f(\mathbf{t})} \Bigr\{||\mathbf{a} - f(\mathbf{t})||^2 + \lambda\int_t f''(s)^2ds\Bigr\} \text{ given any } \lambda > 0
 \end{align}
 
 Where $\lambda$ is the regularisation parameter controlling the penalty to the roughness of the fitted values, which effectively determines how smooth the fitted curve becomes. With *properly* selected $\lambda$, we are able to draw a better boundary for crossing, to give a better count for the oscillations, than the sample mean of the heart rates and chest movements. The proposed smoothing spline crossing method is given by:
@@ -238,7 +236,15 @@ It is noteworthy that the computational burden of the `smooth.spline()` function
 
 ### Model training {#mod-train}
 
-(Incomplete)
+The outlined algorithm for counting the number of oscillations in heart rates and chest movements signal is in fact a non-parametric predictive model, uniquely defined by the training data and the hyperparameter (as it is not directly involved in prediction) $\lambda$. As such, the main objective is to find the optimal value for $\lambda$.
+
+The final model in this project attempts to predict "breaths per minute by chest movements" (denote $\mathbf{r}$) derived (by Algorithm 4) from the time series of "chest movements signal" (denote $\mathbf{c}$), with the "instantaneous heart rates" (denote $\mathbf{h}$). Thus ultimately, the optimal $\lambda = \hat{\lambda}_\text{opt}$ is found such that the derived (again by Algorithm 4) "breaths per minute from the heart rate" (denote $\mathbf{\hat{r}}$), as an estimator of $\mathbf{r}$, minimises
+
+\begin{align*}
+  ||\mathbf{r} - \mathbf{\hat{r}}||^2 = ||\mathbf{r} - \hat{f}(\mathbf{h}; \lambda)||^2 = ||\hat{f}(\mathbf{c}) - \hat{f}(\mathbf{h}; \lambda)||^2
+\end{align*}
+
+The observed and estimated counts are realised once per minute outlined as of below, the *core* of this project:
 
 \begin{algorithm}
 \caption{Deriving breath rate from heart rate based on chest movements}
@@ -265,8 +271,6 @@ It is noteworthy that the computational burden of the `smooth.spline()` function
 \RETURN data matrix $(\mathbf{r}, \mathbf{\hat{r}})$, a bivariate time series (minutely), $\mathbf{r} :=$ "count of breaths by chest movements (observations)" and $\mathbf{\hat{r}} :=$ "number of breaths derived by cardio-activities of that minute (fitted values)", and most importantly $\hat{\lambda}_\text{opt}$ the trained parameter for our final model!
 \end{algorithmic}
 \end{algorithm}
-
-\newpage
 
 ## Model diagnostics
 
@@ -309,8 +313,6 @@ Which gives the Wald's statistic [@Wald1943]:
 
 Applied to the results of our final model, we have the Wald's $p$-value $\mathbb{P}(\chi_1^2 > W) = 2.983174 \times 10^{-13}$, which provides a very strong evidence for the estimator $\mathbf{\hat{r}}$ being biased. However, a further assessment on the 95% asymptotic confidence interval of $\beta$, (0.9521173, 0.9724053), indicates the bias is acceptable.
 
-\newpage
-
 # Conclusion and further research
 
 ## Model evaluation
@@ -349,7 +351,10 @@ The source files and data for reproducing the report, the output of the project 
 
 ## Source code
 
-The source codes for the functions used in the workflow are in the `.R` files at [/R](https://github.com/szmsu2011/comp90072/blob/main/R).
+The source codes for the functions used in the workflow are in the `.R` files at [/R](https://github.com/szmsu2011/comp90072/blob/main/R). Code presented in this Appendix involved self-defined functions and will not work outside this project environment, unless they are sourced from the aforementioned source code directory in the project repository:
+
+```{r re-source, echo = TRUE, eval = FALSE}
+```
 
 ## Data wrangling and signal processing
 

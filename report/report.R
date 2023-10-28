@@ -68,6 +68,10 @@ resid_plot <- with(resp_df, tibble(
 reg_plot <- attributes(resp_df)$reg_plot
 wrap_plots(resid_plot, reg_plot, widths = c(1, 1.2))
 
+## ---- re-source
+r_source <- list.files("/R", full.names = TRUE)
+purrr::map(r_source[stringr::str_detect(r_source, "\\.R$")], source)
+
 ## ---- data
 training_set <- c("a01", "a02", "a03", "a04", "b01")
 test_set <- c("c01", "c02", "c03")
