@@ -233,7 +233,7 @@ It is noteworthy that the computational burden of the `smooth.spline()` function
 \end{algorithmic}
 \end{algorithm}
 
-```{r sszc, fig.height = 3.2, fig.cap = "Time series of chest movement (top) and heart rates (bottom) at 1Hz for 1 minute. Blue: naive mean-crossing gives a count of 11.5 and 6 breaths; red: smoothing spline crossing gives a count of 19.5 and 16.5 breaths. We can clearly see that smoothing spline performs much better in counting breaths."}
+```{r sszc, fig.height = 3.2, fig.cap = "Subject a02's chest movement (top) and heart rates (bottom) at 1Hz for 1 minute. Blue: naive mean-crossing gives a count of 11.5 and 6 breaths; red: smoothing spline crossing gives a count of 19.5 and 16.5 breaths. We can clearly see that smoothing spline performs much better in counting breaths."}
 ```
 
 ### Model training {#mod-train}
@@ -262,7 +262,7 @@ It is noteworthy that the computational burden of the `smooth.spline()` function
 \FOR{each 60-second segment of $\mathbf{h}$}
 \STATE Pass each minute of $\mathbf{h}$ into Algorithm 4 (with argument of $\lambda = \hat{\lambda}_\text{opt}$) to compute the derived rate of breath from heart rate, and output $\rightarrow \mathbf{\hat{r}}$ which is the model's estimate of $\mathbf{r}$: the chest rate of breath
 \ENDFOR
-\RETURN data matrix $(\mathbf{r}, \mathbf{\hat{r}})$, a bi-variate time series (minutely), $\mathbf{r} :=$ "count of breaths by chest movements (observations)" and $\mathbf{\hat{r}} :=$ "number of breaths derived by cardio-activities of that minute (fitted values)", and most importantly $\hat{\lambda}_\text{opt}$ the trained parameter for our final model!
+\RETURN data matrix $(\mathbf{r}, \mathbf{\hat{r}})$, a bivariate time series (minutely), $\mathbf{r} :=$ "count of breaths by chest movements (observations)" and $\mathbf{\hat{r}} :=$ "number of breaths derived by cardio-activities of that minute (fitted values)", and most importantly $\hat{\lambda}_\text{opt}$ the trained parameter for our final model!
 \end{algorithmic}
 \end{algorithm}
 
